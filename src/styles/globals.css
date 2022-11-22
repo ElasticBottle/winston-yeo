@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: 161 98 7 /*theme(colors.orange.700)*/;
+    --color-secondary: 59 130 246 /*theme(colors.blue.500)*/;
+    --color-success: 21 128 61 /*theme(colors.green.700)*/;
+    --color-info: 29 78 216 /*theme(colors.blue.700)*/;
+    --color-warning: 161 98 7 /*theme(colors.yellow.700)*/;
+    --color-danger: 161 98 7 /*theme(colors.red.700)*/;
+    --color-text-primary: 15 23 42 /*theme(colors.slate.900)*/;
+    --color-text-secondary: 71 85 105 /*theme(colors.slate.600)*/;
+    --color-base-primary: 250 250 250 /*theme(colors.zinc.50)*/;
+    --color-base-secondary: 244 244 245 /*theme(colors.zinc.100)*/;
+  }
+
+  [data-theme="dark"] {
+    --color-primary: 161 98 7 /*theme(colors.orange.700)*/;
+    --color-secondary: 59 130 246 /*theme(colors.blue.500)*/;
+    --color-success: 21 128 61 /*theme(colors.green.700)*/;
+    --color-info: 29 78 216 /*theme(colors.blue.700)*/;
+    --color-warning: 161 98 7 /*theme(colors.yellow.700)*/;
+    --color-danger: 161 98 7 /*theme(colors.red.700)*/;
+    --color-text-primary: 248 250 252 /*theme(colors.slate.50)*/;
+    --color-text-secondary: 226 232 240 /*theme(colors.slate.200)*/;
+    --color-base-primary: 24 24 27 /*theme(colors.zinc.900)*/;
+    --color-base-secondary: 39 39 42 /*theme(colors.zinc.800)*/;
+  }
+}
