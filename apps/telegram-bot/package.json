@@ -20,7 +20,7 @@
 		"@winston/db": "workspace:*",
 		"@winston/validators": "workspace:*",
 		"grammy": "^1.25.2",
-		"hono": "^4.4.9",
+		"hono": "^4.4.10",
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
