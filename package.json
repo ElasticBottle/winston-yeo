@@ -1,0 +1,42 @@
+{
+  "name": "rectangular-labs",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "tooling/*"
+  ],
+  "scripts": {
+    "clean": "git clean -xdf node_modules .turbo .sst",
+    "clean:workspaces": "turbo clean",
+    "db:migrate-generate": "pnpm run --filter @rectangular-labs/db  migrate-generate",
+    "db:migrate-push": "pnpm run --filter @rectangular-labs/db  migrate-push",
+    "db:push": "pnpm run --filter @rectangular-labs/db push --force",
+    "db:studio": "pnpm run --filter @rectangular-labs/db studio",
+    "ui:add": "cd ./packages/ui && pnpm run ui-add && cd ../..",
+    "env:set": "pnpm dotenvx set",
+    "env:get": "pnpm dotenvx get",
+    "new:package": "turbo gen package",
+    "dev": "docker compose up -d && turbo run dev",
+    "build": "turbo build",
+    "build:preview": "turbo build:preview",
+    "build:production": "turbo build:production",
+    "changeset": "changeset",
+    "changeset:release": "pnpm run build && changeset publish",
+    "check": "biome check --fix",
+    "format": "turbo run format --continue",
+    "lint": "turbo run lint --continue",
+    "typecheck": "turbo run typecheck --continue",
+    "postinstall": "pnpx sherif@latest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.3",
+    "@changesets/cli": "^2.29.5",
+    "@dotenvx/dotenvx": "^1.48.4",
+    "@rectangular-labs/typescript": "workspace:*",
+    "@turbo/gen": "^2.5.5",
+    "turbo": "^2.5.5",
+    "typescript": "^5.8.3"
+  },
+  "packageManager": "pnpm@10.12.1"
+}
