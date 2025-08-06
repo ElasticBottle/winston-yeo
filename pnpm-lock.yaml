@@ -353,9 +353,6 @@ importers:
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      zod:
-        specifier: ^3.25.76
-        version: 3.25.76
     devDependencies:
       '@types/react':
         specifier: ^19.1.9
