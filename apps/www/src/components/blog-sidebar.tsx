@@ -1,76 +1,71 @@
-import { cn } from "@rectangular-labs/ui/utils/cn";
-import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@rectangular-labs/ui/components/ui/sidebar";
+import { Link, useLocation } from "@tanstack/react-router";
 
-interface BlogSidebarProps {
-  className?: string;
-}
+const menuItems = [
+  {
+    label: "Home",
+    href: "/" as const,
+  },
+  {
+    label: "Articles",
+    href: "/articles" as const,
+  },
+  {
+    label: "About",
+    href: "/about" as const,
+  },
+];
 
-export function BlogSidebar({ className }: BlogSidebarProps) {
-  const [isHovered, setIsHovered] = useState(false);
+export function BlogSidebar() {
+  const location = useLocation();
+  const { setOpen } = useSidebar();
 
   return (
-    <aside
-      className={cn(
-        "fixed top-0 left-0 z-50 hidden h-screen border-gray-200 border-r bg-gray-100 transition-all duration-300 ease-in-out md:block",
-        isHovered ? "w-64" : "w-16",
-        className,
-      )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+    <Sidebar
+      collapsible="icon"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      variant="floating"
     >
-      <div className="flex h-full flex-col">
-        {/* Menu Header */}
-        <div className="flex items-center p-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-400 font-bold text-black">
-            W
-          </div>
-          {isHovered && (
-            <span className="ml-3 font-medium text-lg opacity-100 transition-opacity duration-200">
-              Menu
-            </span>
-          )}
-        </div>
+      <p className="-translate-x-1/2 -translate-y-1/2 -rotate-90 absolute top-1/2 left-1/2 hidden text-xl group-data-[collapsible=icon]:block">
+        Menu
+      </p>
 
-        {/* Navigation Items */}
-        <nav className="flex-1 px-4">
-          <ul className="space-y-2">
-            <li>
-              <Link
-                className={cn(
-                  "flex items-center rounded-lg px-2 py-3 transition-colors hover:bg-gray-100",
-                  "text-gray-700 hover:text-gray-900",
-                )}
-                to="/"
-              >
-                <span className="font-medium">Home</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={cn(
-                  "flex items-center rounded-lg px-2 py-3 transition-colors hover:bg-gray-100",
-                  "text-gray-700 hover:text-gray-900",
-                )}
-                to="/about"
-              >
-                <span className="font-medium">About</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={cn(
-                  "flex items-center rounded-lg px-2 py-3 transition-colors hover:bg-gray-100",
-                  "text-gray-700 hover:text-gray-900",
-                )}
-                to="/articles"
-              >
-                <span className="font-medium">Articles</span>
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </aside>
+      <SidebarHeader>
+        <p className="w-full border-sidebar-border border-b py-8 text-center text-xl group-data-[collapsible=icon]:hidden">
+          Menu
+        </p>
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    className="relative h-full justify-center py-5 text-xl transition-colors before:absolute before:bottom-0 before:left-1/2 before:h-0.5 before:w-0 before:bg-current before:transition-all before:duration-300 hover:bg-sidebar hover:before:left-0 hover:before:w-full data-[active=true]:bg-sidebar data-[active=true]:font-bold"
+                    isActive={location.pathname === item.href}
+                  >
+                    <Link to={item.href}>{item.label}</Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 }

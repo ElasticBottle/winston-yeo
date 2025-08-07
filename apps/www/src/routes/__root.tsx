@@ -1,4 +1,8 @@
 import { ThemeProvider } from "@rectangular-labs/ui/components/theme-provider";
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@rectangular-labs/ui/components/ui/sidebar";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -63,14 +67,15 @@ function RootLayout() {
       </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="min-h-screen">
+          <SidebarProvider>
             <BlogSidebar />
-            <MobileNav />
-
-            <main className="min-h-screen">
-              <Outlet />
-            </main>
-          </div>
+            <SidebarInset>
+              <MobileNav />
+              <div className="min-h-screen">
+                <Outlet />
+              </div>
+            </SidebarInset>
+          </SidebarProvider>
         </ThemeProvider>
         <TanStackRouterDevtools position="bottom-left" />
         <ReactQueryDevtools buttonPosition="bottom-right" />
