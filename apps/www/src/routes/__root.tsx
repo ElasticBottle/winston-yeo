@@ -8,6 +8,8 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { BlogSidebar } from "~/components/blog-sidebar";
+import { MobileNav } from "~/components/mobile-nav";
 import { seo } from "~/lib/seo";
 import appCss from "../style.css?url";
 
@@ -22,9 +24,9 @@ export const Route = createRootRouteWithContext<{
         content: "width=device-width, initial-scale=1",
       },
       ...seo({
-        title: "Elastic Bottle Monorepo template",
+        title: "Big Blog Title - Welcome to the big blog",
         description:
-          "Simple typescript monorepo template for end to end application development",
+          "A personal blog featuring articles about life, technology, and various thoughts",
       }),
     ],
     links: [
@@ -61,7 +63,14 @@ function RootLayout() {
       </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Outlet />
+          <div className="min-h-screen">
+            <BlogSidebar />
+            <MobileNav />
+
+            <main className="min-h-screen">
+              <Outlet />
+            </main>
+          </div>
         </ThemeProvider>
         <TanStackRouterDevtools position="bottom-left" />
         <ReactQueryDevtools buttonPosition="bottom-right" />
