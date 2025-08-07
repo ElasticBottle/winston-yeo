@@ -99,7 +99,6 @@ temp-store
 .sst
 sst-env.d.ts
 
-# AI autocomplete
-.aider*
-.cursorrules
+# content-collections
+.content-collections
 

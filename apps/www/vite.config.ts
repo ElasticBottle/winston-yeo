@@ -1,3 +1,4 @@
+import contentCollections from "@content-collections/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
@@ -14,6 +15,9 @@ const env = await jiti.import("./src/lib/env");
 
 const config = defineConfig({
   plugins: [
+    contentCollections({
+      configPath: "./content-collections.ts",
+    }),
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
