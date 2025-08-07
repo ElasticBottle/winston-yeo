@@ -39,7 +39,7 @@ description: Guidelines for developing applications in the apps directory
 ## App Structure Patterns
 
 - `src/routes/` - Route definitions for TanStack Router
-- `src/components/` - App-specific components
+- `src/components/` - App-specific components built off components from [@rectangular-labs/ui](mdc:ui-components.mdc) following Shad CN semantic token for styling
 - `src/lib/` - App-specific utilities and configurations
 - `public/` - Static assets
 
