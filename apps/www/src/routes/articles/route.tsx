@@ -1,6 +1,12 @@
-import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  useMatchRoute,
+  useNavigate,
+} from "@tanstack/react-router";
 import { type } from "arktype";
 import { allArticles } from "content-collections";
+import { LayoutGroup, motion } from "motion/react";
 import { useMemo, useState } from "react";
 
 const articlesSearchSchema = type({
@@ -16,7 +22,11 @@ export const Route = createFileRoute("/articles")({
 function ArticlesLayout() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: "/articles" });
+  const matchRoute = useMatchRoute();
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
+
+  // Detect when we're on the article detail route
+  const isDetailRoute = !!matchRoute({ to: "/articles/$slug" });
 
   // Get all unique tags from articles
   const allTags = useMemo(() => {
@@ -51,14 +61,35 @@ function ArticlesLayout() {
   };
 
   return (
-    <div className="min-h-screen px-8 py-16">
-      <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col lg:flex-row lg:gap-16">
+    <div className="h-screen">
+      <div className="mx-auto flex h-full max-w-6xl">
+        <motion.div
+          className="flex h-full w-full flex-col lg:flex-row lg:gap-16"
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           {/* Left side - Search and Filters */}
-          <div className="mb-12 lg:mb-0 lg:w-1/3">
-            <h1 className="mb-12 font-bold text-5xl md:text-6xl">Articles</h1>
+          <motion.div
+            animate={{
+              opacity: isDetailRoute ? 0.35 : 1,
+              filter: isDetailRoute ? "grayscale(1)" : "grayscale(0)",
+            }}
+            className={
+              "h-full w-full px-8 py-16 data-[detail=true]:hidden lg:w-80 lg:data-[detail=true]:fixed lg:data-[detail=true]:top-0 lg:data-[detail=true]:left-0 lg:data-[detail=true]:block lg:data-[detail=true]:cursor-pointer"
+            }
+            data-detail={isDetailRoute}
+            initial={{ opacity: 0, x: -16 }}
+            onClick={() => {
+              if (isDetailRoute) {
+                void navigate({ to: "/articles" });
+              }
+            }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <motion.h1 className="mb-12 font-bold text-5xl md:text-6xl" layout>
+              Articles
+            </motion.h1>
 
-            <div className="space-y-6">
+            <motion.div className="space-y-6" layout>
               {/* Search */}
               <div>
                 <input
@@ -104,14 +135,23 @@ function ArticlesLayout() {
                   </div>
                 )}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Right side - Articles Content */}
-          <div className="lg:w-2/3">
-            <Outlet />
-          </div>
-        </div>
+          <LayoutGroup id="articles">
+            <motion.div
+              className="flex h-full w-full"
+              layout
+              style={{ flexBasis: isDetailRoute ? "100%" : "66.6667%" }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="h-full w-full px-8 py-16">
+                <Outlet />
+              </div>
+            </motion.div>
+          </LayoutGroup>
+        </motion.div>
       </div>
     </div>
   );

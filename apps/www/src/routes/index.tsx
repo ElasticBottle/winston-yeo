@@ -11,33 +11,35 @@ function App() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2,
+        staggerChildren: 0.22,
+        delayChildren: 0.15,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    hidden: { opacity: 0, y: 32, scale: 0.98, filter: "blur(6px)" },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
+      filter: "blur(0px)",
       transition: {
-        duration: 1.2,
-        ease: "easeInOut",
+        duration: 0.9,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
 
   const subtitleVariants: Variants = {
-    hidden: { opacity: 0, x: -20 },
+    hidden: { opacity: 0, x: -24 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
-        duration: 0.8,
-        ease: "easeInOut",
+        duration: 0.7,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
@@ -48,15 +50,8 @@ function App() {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
-        ease: "easeInOut",
-      },
-    },
-    hover: {
-      scale: 1.05,
-      transition: {
-        duration: 0.2,
-        ease: "easeOut",
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
@@ -99,7 +94,7 @@ function App() {
           className="flex flex-col gap-8"
           variants={containerVariants}
         >
-          <motion.div variants={linkVariants} whileHover="hover">
+          <motion.div variants={linkVariants}>
             <Link
               className="cursor-pointer text-2xl transition-colors hover:text-primary md:text-3xl"
               to="/about"
@@ -107,7 +102,7 @@ function App() {
               About
             </Link>
           </motion.div>
-          <motion.div variants={linkVariants} whileHover="hover">
+          <motion.div variants={linkVariants}>
             <Link
               className="cursor-pointer text-2xl transition-colors hover:text-primary md:text-3xl"
               to="/articles"

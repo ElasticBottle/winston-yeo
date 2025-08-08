@@ -1,0 +1,160 @@
+---
+title: "Regularization for Machine Learning Algorithms"
+publishedAt: 2020-06-25
+slug: "regularization-machine-learning-algo"
+summary: "a formal introduction to generalizing machine learning algorithms through regularization"
+keywords: ["cs221", "AI", "Artificial Intelligence", "Stanford", "Machine Learning", "generalizing", "regularization", "ridge regularization", "lasso regularization", "ML"]
+isDraft: false
+tags: ["AI", "cs221"]
+toc: false
+---
+
+Minimizing training loss of an algorithm is important, but it is not the only thing that matters. In fact, having 0 training loss can more often than not spell trouble.
+
+What kind of trouble?
+
+Over-fitting. (green line below)
+
+![Graph of over-fitting](/images/generalization/overfitting.png "Graph of over-fitting")
+
+Our ultimate goal is to *minimize error on unseen future examples*.
+
+Since it's hard to obtain unseen examples, we turn instead, to a test set.
+
+## Test Set
+
+$D_{test}$ contains examples not used in training.
+
+Often, it is the case that we save the test till we are happy with our model tuning.
+
+Only after tuning do we run our model on the test set. Note that the more we run our algorithm on the test set, the less accurate a gauge our test set becomes.
+
+## Measuring errors
+
+Having defined our desire to create models that not only minimizes $TrainLoss$, but also errors on unseen examples, we need a way to quantify these errors.
+
+### Approximation Error
+
+Approximation Error is defined as how far the best predictor, $g$, in the hypothesis class $\mathcal{F}$ is away from the best predictor $f^*$ in the predictor space.
+
+$$Err(g) - Err(f^*)$$
+
+*Larger* hypothesis classes have *lower* approximation error because we are taking the minimum over a larger set.
+
+### Estimation Error
+
+Estimation Error is defined as how far the learnt predictor $\hat f(x)$ is from the best predictor in $\mathcal{F}$.
+
+$$Err(\hat f) - Err(g)$$
+
+*Larger* hypothesis classes have *higher* estimation error because it is harder to estimate something more complex and/or the data might be too limited.
+
+!["Estimation and Approximation error with regards to all predictors"](/images/generalization/errors.png "Estimation and Approximation error with regards to all predictors")
+
+## Controlling for error
+
+The error is dependent on 2 things, the feature vector, and the weight associated with the feature vector. Reducing error means controlling either one. In particular, we can reduce dimensionality and reduce weight $\bold{w}$'s norm.
+
+### Reducing the Dimensionality
+
+Reducing the dimensionality of a feature set will result in the hypothesis space to become smaller.
+
+This makes it easier to reduce the estimation error while possibly resulting in a higher approximation error.
+
+Manual feature (template) selection:
+
+- Add features that help
+- Remove features that don't
+
+Automatic feature selection (beyond this article):
+
+- Forward selection
+- Boosting
+- L1 regularization
+
+### Controlling the norm of $\bold{w}$
+
+Controlling the norm of $\bold{w}$ will again, reduce the hypothesis space, resulting in similar effects to [reducing the dimensionality](#reducing-the-dimensionality).
+
+One way to control the norm of $\bold{w}$ is to add an additional term penalizing larger norms of $\bold{w}$. This is known as $L_2$ regularization or weight decay.
+
+#### $L_2$ Regularization
+
+Objective:
+$$\min_{\bold{w}} TrainLoss(\bold{w}) + \frac{\lambda}{2} \|\bold{w}\|^2$$
+
+Our [SGD](../machine-learning-intro-to-reflex-based-model/#stochastic-gradient-descent) formula would then look like:
+
+$$
+\begin{aligned}&\text{initialize } \bold{w} = [0,0, \cdots ] \\\\&\text{for } t = 0, \cdots, T; \\\\& \space\space\space\space \text{for } (x, y) \text{ in } D_{train}; \\\\& \space\space\space\space\space\space\space\space \bold{w} \leftarrow \bold{w} - \eta (\nabla_{w} Loss(x, y, \bold{w})+ \lambda \sum_{i: w_i\in\bold{w}}\bold{w_i})\end{aligned}
+$$
+
+This  has  the  effect  of  keeping w closer  to  the origin than it otherwise would be.
+
+$\lambda$ refers to the regularization parameter.
+
+#### Early Stopping
+
+Early stopping is simply the reduction in the number of iterations that SGD is allowed to run for.
+Each time we update the weights, $\bold{w}$ has the potential of getting larger.
+
+By running a smaller number of iterations, we are implicitly ensuring that $\bold{w}$ stays small
+
+## Hyperparameters
+
+Hyperparameters refer to the properties of the learning algorithm.
+
+This includes but is not limited to features, regularization parameter $\lambda$, number of iterations $T$, step size $\eta$ etc.
+
+The section on [Controlling for error](#controlling-for-error-possibly-rename-this-section) covered was to reduce the estimation error explicitly.
+
+What about our approximation error?
+
+Well, $\lambda$ and $T$ can simply be decreased and increased respectively to grow the hypothesis class, thereby reducing approximation error.
+
+How then, do we decide the values for these parameters?
+
+Through tuning on a validation set!
+
+## Validation Set
+
+With a given set of data, often, a chunk is taken out and set aside to be used as the test set.
+
+The test set is only used to test the final tuned model to try and evaluate its performance on unseen data.
+
+The training set (which majority of data will belong too), is provided for the model to tune its weights.
+
+This leaves us with the validation set, which is a subset of data taken from the training set to simulate the evaluation of the model on the test set.
+
+We will tune the model to use Hyperparameters with the lowest score on the validation set and evaluate our results on the test set.
+
+A popular technique is to use *k-fold cross validation* which basically splits the training set into $k$ parts.
+
+The model is then trained on the $1^{\text{st}} \text{ to } k - 1$ parts and validated with the $k^{\text{th}}$ part.
+
+This process then repeated but training happens on every part except the $k - 1$ part. This part is then used for validation.
+
+The process repeats until all the parts have been used in validation at some point.
+
+The $k$ error scores is then compressed into a mean and variance which provides a more reliable overview of the model's performance with the given Hyperparameters.
+
+## Machine Learning Workflow
+
+So far, we've covered a lot of the mathematical foundation of machine learning. From loss functions to optimizations. We've also discussed features, errors, and how we can control them.
+
+Interestingly, iteratively improving your system after developing the functions is what takes the most time.
+
+Suppose you’re given a binary classification task (backed by a dataset).  What is the process by which you get to a working system?  
+
+Here's the overview of the workflow:
+
+1. Empirically examine the dataset.
+2. Maintain Date Hygiene. Hold out a test from the data and don't look at it until done tuning
+3. Repeat:
+   1. Implement a feature / tune Hyperparameters
+   2. Run Learning algorithm
+   3. Check training and validation errors, predictions, and weights
+   4. Perform error analysis by looking at examples the predictor got wrong ot come up with a new feature or tuning to Hyperparameter.
+4. Run Predictor on test set to get the final error rates.
+
+If the test error is much higher than the validation error, then you probably did too much tweaking and were over-fitting the validation set.

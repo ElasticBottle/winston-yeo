@@ -85,6 +85,8 @@
     "includes": [
       "apps/**",
       "packages/**",
+      "!**/.content-collections/**/*",
+      "!**/worker-configuration.d.ts",
       "!**/orpc-contract.json",
       "!**/node_modules",
       "!**/.sst",

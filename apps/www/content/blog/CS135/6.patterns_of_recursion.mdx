@@ -1,0 +1,119 @@
+---
+title: "Patterns of Recursion"
+publishedAt: 2020-10-03
+slug: "patterns-of-recursion"
+summary: "Understanding the different patterns of recursion"
+keywords: ["CS135", "Waterloo", "recursion","patterns of recursion", "DrRacket"]
+isDraft: false
+tags: ["CS135", "Waterloo"]
+toc: false
+---
+
+We have defined [simple recursion](../CS135/4.data_definitions_templates.md/#simple-recursion) before.
+
+Aside from needing a base case, simple recursion has two requirements:
+
+1. Arguments are passed into the function unchanged
+2. Arguments are one step closer to the base case
+
+Aside from that, there are two other kinds of recursion, accumulative and generative.
+
+## Accumulative Recursion
+
+Accumulative recursion keeps track of a value that stores the information that encompasses everything that the function has seen thus far.
+
+THe accumulated value is then returned when the recursive function reaches a base case.
+
+This accumulated value is known as an accumulator.
+
+Wrappers are often used around accumulated recursion due to the extra parameters that needs to be passed into the function.
+
+Indicators of a accumulative recursion pattern:
+
+* The value(s) in the accumulator function is used in one or more base case.
+* There is a wrapper function that sets the initial value of the accumulator.
+* All arguments to the recursive function is either:
+  * Unchanged
+  * One step closer to the base case
+  * A partial answer for the evaluated cases thus far.
+
+Often, accumulative recursion can be used to substitute a simple recursion to remove a particular function call in order to speed it up.
+
+Of course, do not pre-maturely optimize!
+
+## Generative Recursion
+
+In generative recursion, the parameters for the recursion function is freely calculated at each step.
+
+Another term for this kind of recursion is divide and conquer.
+
+There are no constraints about what can and cannot be passed as an argument, unlike simple and accumulative recursion.
+
+Euclid's greatest common divisor is an example of a simple generative recursion algorithm.
+
+We normally test the base cases and some recursive case.
+
+## Forms of Recursion
+
+So a recursion can either be simple, generative, or accumulative.
+
+Depending on the circumstances, the following are possible forms of recursion.
+
+These forms apply to all three kinds of recursion.
+
+## Tail Recursion
+
+Tail recursion refers to recursion in which the recursive call is the last step being executed.
+
+That is, the base case is the last thing to be run.
+
+Here's an example of summing a list written in a tail recursion fashion
+
+```python
+def mySum(li: List[int], total: int):
+  if len(list) == 0:
+    return total
+  else:
+    return mySum(li[1:], total + li[0])
+```
+
+Contrastingly, we can write it in a non tail recursive way:
+
+```python
+def mySum(li: List[int]):
+  if len(list) == 0:
+    return 0
+  else:
+    return li[0] + mySum(li[1:])
+```
+
+In general, accumulative recursion tends to utilize tail recursion while simple recursion does not.
+
+## Mutual Recursion
+
+Mutual recursion happens when a pair of functions calls on each other.
+
+It would look something like this:
+
+```python
+def cool(toys):
+  # do something
+  if toys:
+    return
+  return uncool()
+
+def uncool():
+  #do something else:
+  toys = some_other_function()
+  cool(toys)
+```
+
+It is important that even in the case of mutual recursion, there is a base case!
+
+Mutual recursion often arise due to complicated relationships between data. Trust the data definitions and templates define.
+
+The worst thing to do is to shy away from mutual recursion for fear it becomes too complicated.
+
+## Termination
+
+The base case bounds the depth of recursion. Thus as long as some arguments get closer to base case, evaluation cannot go on forever.

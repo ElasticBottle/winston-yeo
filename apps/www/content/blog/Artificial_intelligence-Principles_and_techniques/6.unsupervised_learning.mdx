@@ -1,0 +1,131 @@
+---
+title: "Unsupervised Learning"
+publishedAt: "2020-06-28"
+updatedAt: "2020-06-28"
+slug: "unsupervised-learning"
+summary: "Diving into unsupervised learning with k-means clustering"
+keywords: ["cs221", "AI", "Artificial Intelligence", "Stanford", "Machine Learning", "unsupervised learning", "k means clustering", "ML"]
+isDraft: false
+tags: ["AI", "cs221"]
+toc: false
+---
+
+So far, we've only covered supervised learning. Data points occurs in pairs, $(x, y)$, an input and its corresponding output label
+
+Labelled data however, is very expensive to obtain. Often, someone has to manually label these data.
+
+Unlabelled data on the other hand, is much cheaper. A goal then is harness the unlabelled data to help make better predictions.
+
+The goal of unsupervised learning then is to automatically discover the rich latent structure that data often has.
+
+## Types of unsupervised learning
+
+We have two main categories
+
+- Clustering
+- Dimensionality reduction
+
+This article will focus on clustering exclusively.
+
+## Clustering
+
+In clustering, our input $D_{train} = \{x_1, \cdots, x_n\}$ is to be converted to $[z_1, \cdots, z_n], z_i \in \{1,\cdots, K\}$, where $z_i$ is the cluster associate with point $i$.
+
+### K-means Clustering
+
+K-means is a particular method for performing clustering which is based on associating each cluster with a centroid $\mu_k \text{for } k = 1 \cdots K$
+
+The goal is to assign each point to a cluster and to place the centroid for that cluster so that ech point $\phi(x_i)$ is closest to centroid $\large \mu_{z_i}$
+
+To clarify some of the terminology:
+
+- Centroid: $\mu_k, k = 1 \cdots K, \mu_k \in \real^d$
+- Clusters: $1 \cdots K$
+- Point: $\phi(x_i)$
+- Cluster label for point $i$: $z_i, z_i \in \{1, \cdots K\}$
+
+As usual, we have an objective function that we are optimizing for.
+
+It can be written as such:
+
+$$ Loss_{\text{kmeans}}(z, \mu) = \large \sum_{i = 1}^{n}\|\phi(x_i) - \mu_{z_i}\|^2$$
+
+How then, do we optimize our function?
+
+Gradient descent cannot be used here because the value we are taking minimum with respects to a discrete value - cluster.
+
+Dynamic programming cannot be used either because of there is a lack of overlapping sub-problems - distance of points from cluster's centroid are independent.
+
+The solution then, is to alternate between assigning points to centroids, and centroid to points.
+
+Algorithm for k-means:
+
+$$
+\text{Randomly initialise the point for the centroids}
+$$
+$$
+\begin{aligned}&\text{for } t = 1 \cdots T: \\\\& \space \space \space \space \text{for each point } \phi(x_i):\\\\& \space \space \space \space \space \space \space \space \text{assign it to the closest centroid}: \\\\& \space \space \space \space \space \space \space \space z_i \leftarrow \min_{k = 1\cdots K} \|\phi(x_i) - \mu_{k}\|^2\\\\& \space \space \space \space \text{for each cluster } k = 1 \cdots K:\\\\& \space \space \space \space \space \space \space \space \text{set } u_k \text{ to be the average of points in cluster }k: \\\\& \space \space \space \space \space \space \space \space \mu_k \leftarrow \frac{1}{|i:z_i = k|} \sum_{i: z_i = k} \phi(x_i)\end{aligned}
+$$
+
+### Problems with K-means clustering: Mitigated with repeated runs and k-means ++
+
+K-means is guaranteed to converge to a local minimum, but it is not guaranteed to find the global minimum.
+
+To solve that, we can simply run K-means several times from multiple random centroid, $\mu$, initializations.
+
+We will then choose the solution with the lowest lost.
+
+Another solution is to apply K-means++. K-means++ is a heuristic which initializes centroids on training points so that they tend to be distant from one another.
+
+### Extending K-means clustering
+
+Sometime, the examples are not completely unlabelled.
+
+In those cases, we can apply constraints to our k-means algorithm to ensure that points meant to be grouped together are, and those that are not, do not get grouped together.
+
+This results in COP K-means (constrained k-means)
+
+The pseudo-code is as follows:
+
+```python
+def copKMeans(points):
+    # initialize µ1 · · · µk to be randomly selected pairs
+    for each point i:
+        assign i to closest cluster µj such that violateConstraints(i,µj,S) = False
+        if no cluster is found, fail and exit
+
+    for each cluster µj:
+        update its center as the average of all the points in the cluster.
+
+    repeat the assign i and cluster average steps until convergence
+
+    return µ1 · · · µk
+
+def violateConstraints(point,cluster,setOfMustHave):
+    for each pair of points (point, j) in setOfMustHave
+        if j not in cluster:
+            return True # constraint violated
+    return False # constraint not violated
+```
+
+## Conclusion
+
+Unsupervised learning wraps up the tour of reflex models.
+
+The main goal is not about the specific loss functions, or linear predictors.
+
+Instead, the goal is to think in terms of the `model`, `learn`, and `inference` paradigm.
+
+The first is `modelling`. There's two parts to that.
+
+Firstly, [Feature extraction][feature]. Domain knowledge is applied to induce certain [hypothesis class][feature].
+
+Secondly, a predictor is chosen. Either linear predictors or neural networks are employed here.
+
+Loss functions then ties `modelling` to `learning`. While optimization is important, they can only happen when we come up with the right model choice.
+
+Learning can only work when there’s a common core that cuts past all the idiosyncrasies of the examples. This is exactly what features are meant to capture.
+
+Broadly speaking, machine learning is about learning predictors from some input to some output.
+
+[feature]: ../features-in-machine-learning

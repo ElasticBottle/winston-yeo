@@ -1,0 +1,187 @@
+---
+title: "Trees"
+publishedAt: 2020-10-18T16:16:12+08:00
+slug: "tress-intro"
+summary: "Introduction to trees"
+keywords: ["CS135", "Waterloo", "trees", "binary trees", "binary search trees", "DrRacket"]
+isDraft: false
+tags: ["CS135", "Waterloo"]
+toc: false
+---
+
+Some terminologies for dealing with trees:
+
+* Root - A single node in the tree will be a root (It has no parent)
+* Node
+  * Leaf - Leaf nodes have to children
+  * Internal - Nodes with children
+  * Parent
+  * Children
+* Ancestors - The parent of a node $n$ up to the root
+* Descendants - The children of node $n$ down to the leaves
+* Subtree - Rooted at node $n$ and all of its descendants
+* Labels - Data associated with a node
+
+## Characteristics of a tree
+
+Trees have many characteristics. Some of the more important ones pertain too:
+
+* Number of internal nodes
+  * Exactly two, at most two, any number
+* Label locations
+  * On the leaves, on every internal node
+* Order of children
+  * Matters or not
+* Tree structure
+  * Derived from data or for convenience
+
+## Binary Trees
+
+Binary trees are the simplest of trees.
+
+The main feature is that each internal node has **at most 2 children**.
+
+Here's how we'd define a tree structure
+
+```racket
+(define-struct node (key left right))
+;; A Node is a (make-node Any BT BT)
+
+;; A binary tree (BT) is one of:
+;; - empty
+;; - Node
+```
+
+### Searching Binary Trees
+
+Searching binary tree is simply a matter of checking if the current key is not empty and is what we are looking for.
+
+If it isn't, we simply recurse on the left and right subtrees.
+
+```racket
+(define (contains? tree k)
+  (and (not (empty? tree))
+       (or
+        (= k (node-key tree))
+        (contains? (node-left tree) k)
+        (contains? (node-right tree) k))))
+```
+
+But of course, this is about as efficient as a linear search in a list. That is $O(n)$ runtime.
+
+Can we do better?
+
+Let's take a look at binary search trees.
+
+## Binary Search Trees
+
+```racket
+;; A binary search tree (BST) is one of:
+;; - empty
+;; - Node
+
+(define-struct Node (key left right))
+;; a Node is a (make-node Any BST BST)
+;; Requires:
+;;  - key > key of every node in left
+;;  - key < key of every node in right
+```
+
+Because of the ordering property of the `key` in BST, we can save on one recursive function call.
+
+That is, if we know the value we want to `add`, `search`, `remove`, and it is less than the root node's value, then we only need to search the left subtree.
+
+## Augmenting Trees
+
+With BST, we  can begin to tag additional data along with each node:
+
+```racket
+(define-struct node (key value left right))
+;; a Node is a (make-std Any Any BST BST)
+;; Requires:
+;;  - key > key of every node in left
+;;  - key < key of every node in right
+```
+
+With this, we can implement a dictionary binary search tree.
+
+## Traversing a Tree
+
+The notion of tree traversal refers to visiting each node of a tree exactly once.
+
+There are 3 ways we can go about our traversal:
+
+### Pre-order
+
+Pre-order traversal visits the root first then each subtree.
+
+```python
+def traverse(tree):
+  do_something(get_root(tree))
+  do_something(get_left_branch(tree))
+  do_something(get_right_branch(tree))
+```
+
+Something like:
+
+```python
+def traverse(tree):
+  result = [
+    get_root(tree),
+    do_something(get_left_branch(tree)),
+    do_something(get_right_branch(tree)),
+  ]
+  return result
+```
+
+is also considered to be pre-order traversal.
+
+### In-order
+
+In-order traversal visit the subtree, the roots, then the next subtree
+
+```python
+def traverse(tree):
+  do_something(get_left_branch(tree))
+  do_something(get_root(tree))
+  do_something(get_right_branch(tree))
+```
+
+### Post-order
+
+Post-order traversal visits each subtree first, then the root.
+
+```python
+def traverse(tree):
+  do_something(get_left_branch(tree))
+  do_something(get_right_branch(tree))
+  do_something(get_root(tree))
+```
+
+## General Trees
+
+With general trees, we can have more than two children.
+
+In that case, instead of having a `left` and `right` data structure, we can use a list.
+
+This will allow us to represent an arbitrary amount of children.
+
+```racket
+;; a Tree is one of:
+;; * Num
+;; * A General-Tree
+
+(define-struct general-tree (value lot))
+;; a GeneralTree is a (make-general-tree Any (listof Tree))
+
+;; tree-template: Tree -> Any
+(define (tree-template tree)
+  (cond
+    [(num? tree) ...]
+    [(general-tree? tree) (general-tree-template tree)]))
+
+;; general-tree-tempate: GeneralTree -> Any
+(define (general-tree-template tree)
+  (... (general-tree-value tree)
+       (tree-template (general-tree-lot tree)) ...))
+```

@@ -12,6 +12,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { AnimatePresence } from "motion/react";
 import { BlogSidebar } from "~/components/blog-sidebar";
 import { MobileNav } from "~/components/mobile-nav";
 import { seo } from "~/lib/seo";
@@ -72,7 +73,9 @@ function RootLayout() {
             <SidebarInset>
               <MobileNav />
               <div className="min-h-screen">
-                <Outlet />
+                <AnimatePresence mode="wait">
+                  <Outlet />
+                </AnimatePresence>
               </div>
             </SidebarInset>
           </SidebarProvider>

@@ -1,0 +1,191 @@
+---
+title: "Optimization in Artificial Intelligence"
+publishedAt: "2020-06-18"
+updatedAt: "2020-06-18"
+slug: "optimization-in-artificial-intelligence"
+summary: "A brief introduction to the basic optimization techniques in AI"
+keywords: ["cs221", "AI", "Artificial Intelligence", "Stanford", "optimization", "optimization techniques"]
+isDraft: false
+tags: ["AI", "cs221"]
+toc: false
+---
+
+## Discrete Optimization
+
+Finding the best discrete object
+
+$$\large \min_{\large p\in\text{Paths}} =  \text{Cost}(p)$$
+
+**Algorithmic Tool:** Dynamic programming
+
+### Example: Edit distance
+
+Given 2 strings `s` and `t`, find the minimum number of edits to change `s` into `t`
+
+An edit refers to either:
+
+- insertion
+- deletion
+- substitution
+
+`cats` into `the cats` => Minimum edit distance of 4
+
+### Solution: Edit Distance Naive (backtracking)
+
+This is a search problem, so intuition is to bank on recursion
+
+In particular, we will use backtracking.
+
+```python
+def computeEditDistance(string1, string2):
+    def recurse (n, m):
+        '''
+        Returns the minimum edit distance between
+         - first n letter(s) of string1
+         - first m letter(s) of string2
+        '''
+        if n == 0: # Base case
+            result = m
+        elif m == 0: # Base case
+            result = n
+        elif string1[n - 1] == string2[m - 1]: # Last letter matches
+            return recurse(n - 1, m - 1)
+        else: # Last letter doesn't match
+            subCost = 1 + recurse(n - 1, m - 1)
+            delCost = 1 + recurse(n - 1, m)
+            insCost = 1 + recurse(n, m - 1)
+            result = min(insCost, delCost, subCost)
+        return result
+    return recurse(len(string1), len(string2))
+```
+
+However, there is a problem that becomes apparent.
+
+It takes exponentially more time as the string length grows.
+
+### Solution: Edit Distance (backtracking With dynamic programming)
+
+In order to speed things up, we save the result we calculate.
+
+```python
+def computeEditDistance(string1, string2):
+    cache = map() # NEW (m, n) => result
+    def recurse (n, m):
+        '''
+        Returns the minimum edit distance between
+         - first n letter(s) of string1
+         - first m letter(s) of string2
+        '''
+        if (n,m) in cache: # NEW Values calculated before
+            return cache[(n,m)] # NEW
+        if n == 0: # Base case
+            result = m
+        elif m == 0: # Base case
+            result = n
+        elif string1[n - 1] == string2[m - 1]: # Last letter matches
+            return recurse(n - 1, m - 1)
+        else: # Last letter doesn't match
+            subCost = 1 + recurse(n - 1, m - 1)
+            delCost = 1 + recurse(n - 1, m)
+            insCost = 1 + recurse(n, m - 1)
+            result = min(insCost, delCost, subCost)
+        cache[(n, m)] = result # NEW
+        return result
+    return recurse(len(string1), len(string2))
+```
+
+Why does this work?
+
+Simple. Values calculated before are not recalculated each time.
+
+Consider the following:
+
+![pictorial representation of computeEditDistance('His', 'hs')](/images/cs221/optimization/recursion_viz.png "pictorial representation of computeEditDistance('His', 'hs')")
+
+The left branch `sub` is done first. After that branch is calculated, these is the sate of cache:
+
+```python
+cache = {
+    (1, 0) = 1
+    (1, 1) = 0
+    (2, 0) = 2
+    (2, 1) = 1
+}
+```
+
+Going down the del branch, we eventually hit the `ins` branch.
+
+This time, instead of recalculating, the value is simply retrieved from cache and returned.
+
+## Continuous Optimization
+
+Find the best vector of real numebrs
+
+$$\large \min_{\large \bold{w} \in \real^d} \text{TrainingError} (\bold w)$$
+
+**Algorithmic Tool:** Gradient Descent
+
+### Example: Finding the least square line
+
+For a set of pairs $\{(\large x_1, y_1), ... ,(x_n, y_n)\}$, find line $\large w \in \real$ that minimizes the error. (assume the line passing thorugh the origin). Error function $\large F(\bold w) = \sum_{i = 1}^{n}(wx_i - y_i)^2$.
+
+**Visualised:**
+
+![Graph with line of lesat square](/images/cs221/optimization/least_square_graph.png "Graph with line of least square")
+
+### Solution: Finding the Least Square Line (Gradient descent)
+
+Solving this involves recognizing that we are simply trying to minimize the square of the distance from each point to line $w$.
+
+We want $w$ when $\large F(\bold w) = \sum_{i = 1}^{n}(wx_i - y_i)^2$ is at the minimum.
+
+**Graphically**:
+
+![Graph of lines of least square values against gradient](/images/cs221/optimization/least_square_error_graph.png "Graph of lines of least square values against gradient")
+
+in order to find minimum, calculas will be used.
+
+We will, however, not be finding the gradient in closed form (able to be expressed using a finite number of operations).
+
+Why?
+
+Because not all equations have a closed form.
+
+Instead, we employ Gradient Descent.
+
+Here's what the algorithm does:
+
+1. Pick a random value for $\bold{w}$, say 0
+2. Move a small step, $\eta$ (read eta), in the direction of the gradient.
+3. repeat step 1 for $T$ number of times or until the value of the gradient stops changing
+
+```python
+points = [(x1, y1), (x2, y2)]
+
+def F(w):
+    return sum((w * x - y) ** 2 for x, y in points)
+
+def dF(w):
+    return sum(2 * (w * x - y) * x for x, y in points)
+
+def gradientDescent(F, dF):
+    w = 0 # choose a random value
+    eta = 0.01 # step size eta
+    interval = 100 # number of times to repeat, T
+    for i in range(interval):
+        value = F(w)
+        gradient = dF(w)
+        w = w - eta * gradient # move in the direction of the gradient
+        print(f'interval{i}: w = {w}, F(w): {value}, dF(w)= {gradient}')
+```
+
+## Conclusion
+
+In closing, these two simple optimization will form the foundation in improving the train times of our machine learning algorithms.
+
+Moving forward, specific algorithm aside, here are some general principles when optimizing code:
+
+- abstract away the details
+- break down the problem
+
+This was written in python, if you're interested, [here's a good guide](https://nbviewer.jupyter.org/gist/rpmuller/5920182)

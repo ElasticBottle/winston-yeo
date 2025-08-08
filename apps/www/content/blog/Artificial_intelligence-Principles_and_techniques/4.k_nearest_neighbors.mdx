@@ -1,0 +1,35 @@
+---
+title: "K Nearest Neighbors (KNN)"
+publishedAt: 2020-06-23
+slug: "k-nearest-neighbor"
+summary: "K nearest neighbor, a lazy ai algorithm"
+keywords: ["cs221", "AI", "Artificial Intelligence", "Stanford", "Machine Learning", "KNN", "k nearest neighbor", "ML"]
+isDraft: false
+tags: ["AI", "cs221"]
+toc: false
+---
+K nearest neighbor is build on the idea that similar examples tend to have similar outputs. It is perhaps one of the simplest algorithms, and a lazy AI. Lazy meaning that it does not require any training.
+
+How does it work then?
+
+When given an input, a nearest neighbor algorithm simply matches the incoming input with the closest example in $D_{train}$, returning that example's label.
+
+The *k* in K nearest neighbor is just a hyper parameter allowing us to specify how many nearest data point we want to consider before returning a label.
+
+A value of 2 will result in taking the 2 closest data points in $d_{train}$ and returning the majority label. If there's a tie, one label will be returned at random.
+
+## Features of K Nearest Neighbor
+
+KNN is much more expressive than quadratic features.
+
+KNN is non-parametric, meaning that the hypothesis class adapts to number of examples.
+
+## Algorithm
+
+### Nearest Neighbor
+
+$$\begin{aligned} f(x') = &\text{find } (x, y) \text{ in } d_{train} \text{such that } \|\phi(x) - \phi (x')\| \text{ is smallest} \\\\ &\text{return } y\end{aligned}$$
+
+### K Nearest Neighbor
+
+$$\begin{aligned} f(x') = &\text{find } [(x_1, y_1), \cdots (x_k, y_k)] \text{ in } d_{train} \text{such that } [\|\phi(x_1) - \phi (x')\|, \cdots \|\phi(x_k) - \phi(x')\| \text{ is smallest} \\\\ &\text{return the most occurring } y \end{aligned}$$

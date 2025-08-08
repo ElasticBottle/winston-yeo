@@ -18,12 +18,12 @@ const menuItems = [
     pathname: "/" as const,
   },
   {
-    label: "Articles",
-    pathname: "/articles" as const,
-  },
-  {
     label: "About",
     pathname: "/about" as const,
+  },
+  {
+    label: "Articles",
+    pathname: "/articles" as const,
   },
 ];
 
@@ -38,18 +38,14 @@ export function BlogSidebar() {
       onMouseLeave={() => setOpen(false)}
       variant="floating"
     >
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {!open && (
           <motion.p
             animate={{ opacity: 1, scale: 1 }}
-            className="-translate-x-1/2 -translate-y-1/2 -rotate-90 absolute top-1/2 left-1/2 hidden text-xl group-data-[collapsible=icon]:block"
-            exit={{ opacity: 0, scale: 0.8 }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            transition={{
-              duration: 0.6,
-              ease: "easeInOut",
-              delay: 0.2,
-            }}
+            className="-rotate-90 -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 hidden transform-gpu text-xl will-change-transform group-data-[collapsible=icon]:block"
+            exit={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
             Menu
           </motion.p>
@@ -57,18 +53,14 @@ export function BlogSidebar() {
       </AnimatePresence>
 
       <SidebarHeader>
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
           {open && (
             <motion.p
               animate={{ opacity: 1, y: 0 }}
               className="w-full border-sidebar-border border-b py-8 text-center text-xl group-data-[collapsible=icon]:hidden"
-              exit={{ opacity: 0, y: -20 }}
-              initial={{ opacity: 0, y: -20 }}
-              transition={{
-                duration: 0.8,
-                ease: "easeInOut",
-                delay: 0.1,
-              }}
+              exit={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               Menu
             </motion.p>
@@ -80,24 +72,24 @@ export function BlogSidebar() {
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
           <SidebarGroupContent>
             <SidebarMenu>
-              <AnimatePresence>
+              <AnimatePresence initial={false}>
                 {open &&
                   menuItems.map((item, index) => (
                     <motion.div
                       animate={{ opacity: 1, x: 0, y: 0 }}
-                      exit={{ opacity: 0, x: -30, y: 20 }}
-                      initial={{ opacity: 0, x: -30, y: 20 }}
+                      exit={{ opacity: 0, x: -22, y: 14 }}
+                      initial={{ opacity: 0, x: -22, y: 14 }}
                       key={item.pathname}
                       transition={{
-                        duration: 0.8,
-                        ease: "easeInOut",
-                        delay: 0.3 + index * 0.1,
+                        duration: 0.45,
+                        ease: [0.22, 1, 0.36, 1],
+                        delay: 0.12 + index * 0.06,
                       }}
                     >
                       <SidebarMenuItem>
                         <SidebarMenuButton
                           asChild
-                          className="relative h-full justify-center py-5 text-xl transition-colors before:absolute before:bottom-0 before:left-1/2 before:h-0.5 before:w-0 before:bg-current before:transition-all before:duration-300 hover:bg-sidebar hover:before:left-0 hover:before:w-full data-[active=true]:bg-sidebar data-[active=true]:font-bold"
+                          className="relative h-full transform-gpu justify-center py-5 text-xl transition-colors will-change-transform before:absolute before:bottom-0 before:left-0 before:h-0.5 before:w-full before:origin-left before:scale-x-0 before:transform before:bg-current before:transition-transform before:duration-300 before:will-change-transform hover:bg-sidebar hover:before:scale-x-100 data-[active=true]:bg-sidebar data-[active=true]:font-bold"
                           isActive={
                             location.pathname === item.pathname ||
                             (item.pathname.length > 1 &&

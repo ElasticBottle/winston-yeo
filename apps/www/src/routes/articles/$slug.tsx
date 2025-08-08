@@ -1,13 +1,13 @@
 import { MDXContent } from "@content-collections/mdx/react";
+import { useTheme } from "@rectangular-labs/ui/components/theme-provider";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { allArticles } from "content-collections";
+import { motion } from "motion/react";
 
 export const Route = createFileRoute("/articles/$slug")({
   component: Article,
   loader: ({ params }) => {
-    const article = allArticles.find(
-      (article) => article._meta.path === params.slug,
-    );
+    const article = allArticles.find((article) => article.slug === params.slug);
     if (!article) {
       throw notFound();
     }
@@ -17,14 +17,19 @@ export const Route = createFileRoute("/articles/$slug")({
 
 function Article() {
   const article = Route.useLoaderData();
-
+  const { theme } = useTheme();
   return (
-    <div className="min-h-screen px-8 py-16">
-      <div className="mx-auto max-w-4xl">
+    <motion.div key={article._meta.path}>
+      <div className="mx-auto max-w-3xl lg:max-w-4xl">
         {/* Back button */}
-        <div className="mb-8">
+        <motion.div
+          animate={{ opacity: 1, x: 0 }}
+          className="mb-8"
+          initial={{ opacity: 0, x: -12 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <Link
-            className="inline-flex items-center text-gray-400 transition-colors hover:text-yellow-400"
+            className="inline-flex items-center text-muted-foreground transition-colors hover:text-primary"
             to="/articles"
           >
             <svg
@@ -43,44 +48,62 @@ function Article() {
             </svg>
             Back to Articles
           </Link>
-        </div>
+        </motion.div>
 
         {/* Article Header */}
         <header className="mb-12">
-          <h1 className="mb-6 font-bold text-4xl leading-tight md:text-5xl lg:text-6xl">
+          <motion.h2
+            className="mb-6 font-bold text-4xl leading-tight md:text-5xl lg:text-6xl"
+            layoutId={`article-title-${article.title}`}
+          >
             {article.title}
-          </h1>
+          </motion.h2>
 
           {/* Tags */}
-          <div className="mb-6 flex flex-wrap gap-3">
+          <motion.div
+            className="mb-6 flex flex-wrap gap-3"
+            layoutId={`article-meta-${article.tags.join(",")}-${article.title}`}
+          >
             {article.tags.map((tag) => (
               <span
-                className="rounded-full bg-gray-800 px-4 py-2 font-medium text-gray-300 text-sm"
+                className="rounded-full bg-muted px-4 py-2 font-medium text-muted-foreground text-sm"
                 key={tag}
               >
                 {tag}
               </span>
             ))}
-          </div>
+          </motion.div>
 
           {/* Date if available */}
           {article.publishedAt && (
-            <div className="text-gray-400">
+            <motion.div
+              animate={{ opacity: 1 }}
+              className="text-muted-foreground"
+              initial={{ opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               Published on{" "}
               {new Date(article.publishedAt).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               })}
-            </div>
+            </motion.div>
           )}
         </header>
 
         {/* Article Content */}
-        <div className="prose prose-lg prose-invert max-w-none">
+        <motion.div
+          animate={{ opacity: 1 }}
+          className={`prose prose-lg max-w-none ${
+            theme === "dark" ? "prose-invert" : ""
+          }`}
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.35 }}
+        >
           <MDXContent code={article.mdx} />
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

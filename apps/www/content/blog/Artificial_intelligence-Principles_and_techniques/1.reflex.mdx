@@ -1,0 +1,453 @@
+---
+title: "Machine Learning: an introduction to Reflex based Model"
+publishedAt: 2020-06-19
+slug: "machine-learning-intro-to-reflex-based-model"
+summary: "A brief introduction to the basic optimization techniques in AI"
+keywords: ["cs221", "AI", "Artificial Intelligence", "Stanford", "Machine Learning", "reflex based model", "ML"]
+isDraft: false
+tags: ["AI", "cs221"]
+toc: true
+---
+
+## Linear predictors
+
+A linear predictor is a function that maps an input to an output.
+
+In statistics, the output is known as a response, and the input is a real vector, it is known as the covariate.
+
+### Types of Predictors
+
+Where $f$ is the predictor.
+
+#### binary classifier
+
+$y$ is either 1 or -1
+$ x \rightarrow f \rightarrow y \in \{+1, -1\}$$
+
+#### Multiclass Classifier
+
+$y$ is a category
+$$\textit{Image} \rightarrow f \rightarrow y \in \{category\}$$
+
+#### Regression
+
+$y$ is a real number
+$ x \rightarrow f \rightarrow y \in \real$$
+
+#### Ranking
+
+$y$ is a permutation
+$$1, 2, 3, 4 \rightarrow f \rightarrow 2, 3, 1, 4$$
+
+#### Structured prediction
+
+$y$ is an object built from parts
+$$\textit{你好} \rightarrow f \rightarrow \textit{how are you}$$
+
+### Building blocks of a linear predictor
+
+Every linear predictor is made up of 4 inter-related parts.
+
+#### Data
+
+Specifies $y$ as the ground truth output of input $x$
+
+$$(x,y)$$
+
+training data is a multi-set
+$$\begin{aligned}d_{train} = [&\\\\&(x_1, y_1),\\\\&(x_2, y_2),\\\\&\vdots \\\\&(x_n, y_n)\\\\&]\end{aligned}$$
+
+Data gives us a partial specification of what our program should do.
+
+With $d_{train}$ our learning process will look something like:
+$$ \begin{matrix}&x\\\\&\downarrow\\\\d_{train} \rightarrow \text{learner} \rightarrow &f \\\\ &\downarrow\\\\&y\end{matrix}$$
+
+This is a good segue into the `Model, Inference, Learning` paradigm.
+
+`Model` is how we choose the correct predictor $f$ for a given problem.
+
+`Inference` is how we compute $y$ given $x$.
+
+`Learning` is how we use $d_{train}$ to create a `Model` so that we can do `inference.`
+
+#### Feature Extraction
+
+First step in linear prediction.
+
+Take for example, a given `string` $x$. Predict, $y$, whether the `string` is a song title.
+
+Feature extraction would be concerned with the question:
+*what part of $x$ is relevant for $y$?*
+
+A feature extractor then, returns a set of `feature name: feature value` pair for each input $x$.
+
+$ \text{sleepwalking} \xRightarrow[\text{arbitrary!}]{\text{Feature Extractor}} \begin{bmatrix}\text{< 5 words:} & 1 \\\\\text{fracOfAlpha:} & 1
+\end{bmatrix} $$
+
+The result of the feature extractor results in a feature vector
+
+#### Feature Vector
+
+A feature vector can be defined as the list of feature with its associated value.
+
+Mathematically, a feature vector is simply a `n` by 1 vector.
+
+Based off the previous example:
+
+$$\begin{bmatrix}1\\\\1\end{bmatrix}$$
+
+After all, the algorithm does not care for the names we give the features, just that the position always correspond to *some* particular feature.
+
+Formally, a feature Vector is defined as:
+
+$$\phi(x) = [\phi_3(x) + \phi_2(x) + \cdots + \phi_n(x)]$$
+$$\text{where } \phi(x) \in \real^d$$
+
+Each data point in the dataset has its own feature vector.
+
+You can think of a feature vector as a point in higher dimensional space.
+
+#### Weight vector
+
+A weight vector can be defined as a vector of real number $j$ where each value $\bold {w_i}$ represents the contribution of that feature to the prediction.
+
+$ \bold{w} \in \real^d  $$
+
+Weight vector applies to the dataset as a whole.
+
+$w_i$ represents the affect that $\phi(x_i)$ has on the final output.  
+Intuitively, the more positive $w_i$ is, the more positively feature $\phi(_i)$ affects the predictor.
+
+#### Score
+
+Score on an example is defined as the weighted combination of features. 
+
+It indicates how **confident** we are with our prediction.
+
+$ \bold{w} \cdot \phi (x) = \sum_{j = 1}^{d} \bold{w_j} \phi_j (x), \real^d$$
+
+### Putting it together: Linear Predictors
+
+With [Data](#data), [Feature Vector](#feature-vector), [Weight Vector](#weight-vector), and [score](#score), we can start defining our predictors.
+
+#### Binary Linear Classifier
+
+$$f_\bold{w}(x) = sign(\bold{w} \cdot \phi (x)) =  \begin{cases} +1 &, \text{if } \bold{w} \cdot \phi (x) >= 0 \\\\-1 &, \text{if } \bold{w} \cdot \phi (x) < 0 \end{cases} $$
+
+The sub-scripted $\bold{w}$ in $f_\bold{w}(x)$ just means that the predictor is dependent on some weight vector $\bold{w}$
+
+In general, binary classifiers $f_\bold{w}(x)$ defines a hyperplane **decision boundary** that is normal to the weight vector $\bold{w}$.
+
+![Graph of weight vector with decision boundary](/images/cs221/reflex_model/decision_boundary.png "Graph of weight vector with decision boundary")
+
+Anything on the side in the direction of the weight vector will be positive, the others will be negative. Those on the line will be the edge cases.
+
+#### Multiclass classifier
+
+Binary Linear classification can easily be extended to multiclass classifier.
+
+Consider a dataset with R, G, in order to apply multiclass classifier, the dataset is broken up in one of two ways:
+
+- One ve the rest
+  - R vs G and B
+  - G vs R and B
+  - B vs G and R
+- One vs One
+  - R vs G
+  - R vs B
+  - G vs B
+
+We then train each dataset independently.
+
+When computing predictions, we score each set and take the highest predicted score to be class the data belongs too.
+
+### Learner
+
+The learner can be said to be in charge of outputting a weight vector for linear classifiers.
+
+The Learning algorithm:
+
+$$\text{Optimization problem} \rightarrow \text{Optimization Algorithm}$$
+
+The former focuses on what we want to compute.
+
+The latter focuses on how we compute what we want.
+
+## Loss Minimization
+
+For the most part, Our optimization problem comes in the form of trying to minimize training loss.
+
+Before we can understand training loss, we need to know about:
+
+- [Margins](#margin) for classifiers
+- [Residual](#residual) for regressors
+- [Loss functions](#loss-function).
+
+### Margin
+
+Margin on an example $(x, y)$ is a measure of how **correct** we are.
+
+$$(\bold{w} \cdot \phi (x)) y$$
+
+Positive margin means we are correct, negative otherwise.
+
+Normally used in classifiers (Binary classification).
+
+### Residual
+
+Residual is defined as how far a predicted point is from the actual value based on a given $\bold{w}$.
+
+$$(\bold{w} \cdot \phi (x)) - y$$
+
+A positive value means we overestimated, negative means underestimation.
+
+Normally used in the loss functions of regressors (linear regression).
+
+### Loss function
+
+A loss function is defined as how unhappy we would be with $\bold{w}$ if we used it to make a prediction on $x$ when the correct output is $y$.
+
+$$Loss(x, y, \bold{w})$$
+
+loss function is us stating the objective function of how we want to train our model
+
+0 Loss is the best we can hope for.
+
+### Classifier Loss Functions
+
+#### 0-1 Loss function
+
+$$\begin{matrix} Loss_{0-1}(x, y, \bold{w}) &=& 1\left[ f_{\bold{w}}(x) \neq y \right] \\\\&=& 1 \left[(\bold{w} \cdot \phi (x)) y < 0 \right] \end{matrix}$$
+
+![graph of 0-1 Loss against margin](/images/cs221/reflex_model/01Loss.png "graph of 0-1 Loss against margin")
+
+Returns 0 if the prediction is correct, 1 otherwise.
+
+Normally used with binary classifier.
+
+Unfortunately, this equation won't work with [gradient descent][optimization] algorithms since the gradient is 0 everywhere, except at 0.
+
+#### Hinge Loss
+
+Fixes the problem that 0-1 Loss has with iterative optimization (gradient descent).
+
+$$Loss_{hinge} (x, y, \bold{w})= \max \{1 - \bold{w} \cdot \phi (x)y, 0\}$$
+
+![Graph of Hinge Loass against margin](/images/cs221/reflex_model/hinge_loss.png "Graph of Hinge Loass against margin")
+
+The differential of $Loss_{hinge} (x, y, \bold{w})$:
+
+$$\nabla_{\bold{w}} Loss_{hinge} (x, y, \bold{w}) = \begin{cases} 0 &, \text{if } \bold{w} \cdot \phi(x) y > 1 \\\\ - \phi (x)y &, \text{if } \bold{w} \cdot \phi(x) y < 1 \end{cases}$$
+
+Noticed that there is nothing for when margin is 1 because $Loss_{hinge} (x, y, \bold{w})$ is not differentiable at that point.
+
+In iterative optimization, the $Loss_{hinge} (x, y, \bold{w})$ will try to increase margin if it is less than 1.
+
+#### Logistic Regression
+
+$$Loss_{logistic} (x, y, \bold{w}) = \log (1 + e^{-\bold{w} \cdot \phi (x) y})$$
+
+The main difference between logistic regression and Hinge loss is the non-zero loss that logistic regression dishes out no matter the margin
+
+As such, iterative optimization algorithms has an incentive to keep increasing margins (although a diminishing one).
+
+![Graph of Logistic Regression against Margin](/images/cs221/reflex_model/logistic_regression.png "Graph of Logistic Regression against Margin")
+
+### Regression Loss Functions
+
+#### Square Loss
+
+$$Loss_{square}(x, y, \bold{w}) = (\bold{w} \cdot \phi (x) - y)^2$$
+
+![Graph of square loss against residual](/images/cs221/reflex_model/least_squared_loss.png "Graph of square loss against residual")
+
+Predictions will tend towards the mean. Tries to accommodate every point.
+
+Normally used with linear regression.
+
+#### Absolute deviation Loss
+
+$$Loss_{square}(x, y, \bold{w}) = |\bold{w} \cdot \phi (x) - y|$$
+
+![Graph of Absolute deviation loss against residual](/images/cs221/reflex_model/absDev_loss.png "Graph of Absolute deviation loss against residual")
+
+Predictions will tend towards the median. More robust to outliers
+
+Can be hard to optimize for due to the kink about its turning point which is cannot be differentiated.
+
+Normally used with linear regression
+
+#### Huber Loss
+
+Combines the absolute deviation loss and the square loss.
+
+No kinks at turning point, grows linearly instead of quadratically
+
+### TrainLoss
+
+TrainLoss is defined as the averaged $Loss(x, y, \bold{w})$ on a given data set.
+$$TrainLoss = \frac{1}{|D_{train}|} \sum_ {(x, y) \in D_{train}} Loss(x, y, \bold{w})$$
+
+As such, we can now define loss minimization as the value of $\bold{w}$ such that $TrainLoss(\bold{w})$ is a minimum:
+$$ \min_{ \bold{w} \in \real^d} TrainLoss(\bold{w})$$
+
+For 1 dimensional $\bold{w}$, things will look something like:
+
+![Single dimension train loss](/images/cs221/reflex_model/trainloss_1d.png "Single dimension train loss")
+
+In which case, the value for $\bold{w}$ will be somewhere close to 2.
+
+2 dimensional $\bold{w}$ will look something like:
+
+![2d trainLoass](/images/cs221/reflex_model/trainloss_2d.png "2d trainLoss")
+
+In which case, the value of $\bold{w}$ will be $\begin{pmatrix}\bold{w_1} \\ \bold{w_2}\end{pmatrix}$ where the values of $\bold{w_1}$ and $\bold{w_2}$ will be at the middle of the smallest blue circle.
+
+## Stochastic Gradient Descent
+
+### Generating Artificial Data
+
+As an aside, testing is a crucial aspect, so here are some ways to generate random data.
+
+For Regressors:
+
+```python
+true_w = np.array([1, 2, 3, 4, 5, ... n])
+d  = len(true_w)
+points = []
+num_of_points = 10000
+for i in range(num_of_points):
+    x = np.random.randn(d) # creates a random array populated by normal distribution with mean 0 and variance 1
+    y = w.dot(x) + np.random.randn() # a single random number
+    points.append((x, y))
+```
+
+For Binary Classifiers:
+
+```python
+def classify(score):
+    if score > 0:
+        np.random.rand() < 0.1: # adding misclassification
+            return -1
+        return 1
+    else if score < 0:
+       np.random.rand() < 0.1:
+            return 1
+        return -1
+
+true_w = np.array([1, 2, 3, 4, 5, ... n])
+d  = len(true_w)
+points = []
+num_of_points = 10000
+for i in range(num_of_points):
+    x = np.random.randn(d)
+    y = classify(w.dot(x))
+    points.append((x, y))
+```
+
+### Gradient
+
+One important concept here is gradient  $\nabla_{\bold{w}}TrainLoss(\bold{w})$.^
+
+Gradient represents the direction that increases the loss the most.
+
+^ The symbol is Nabla and it represents differentiating $TrainLoss(\bold{w})$ with respect to $\bold{w}$.
+
+### Revisiting Gradient Descent
+
+We've looked at [Gradient Descent][optimization] before.
+
+In order to find the value of $\bold{w}$ that minimizes $TrainLoss(\bold{w})$, we use iterative optimization.
+
+This iterative optimization process is known as [gradient descent][optimization] and has two **hyper-parameters**
+
+- Step size $\eta$
+- Number of iteration $T$
+
+Formally, gradient descent can be represented as:
+$$\begin{aligned}&\text{Initialize } \bold{w} = [0 \cdots 0] \\\\&\text{For } T = 1 \cdots T; \\\\& \space \space \space \space \bold{w} \leftarrow \bold{w} - \eta \nabla_\bold{w} TrainLoss(\bold{w}) \end{aligned}$$
+
+A more general gradient descent algorithm that extends to $\bold{w} \in \real^d$ can now be coded up for least square regression:
+
+```python
+point = [(np.array([1, 2, 3, ... n]), 4), (np.array([1, 2, 3, ... n]), 5)]
+def F(w):
+    return sum((w.dot(x) - y) ** 2 for x, y in points) / len(points)
+
+def dF(w):
+    return sum(2 * (w.dot(x) - y) * x for x, y, in points) / len(points)
+
+def gradientDescent(F, dF, d):
+    w = np.random.randn(d)
+    eta = 0.01
+    interval = 1000
+    for t in range(interval):
+        value = F(w)
+        gradient = dF(w)
+        w = w - eta * gradient
+        print(f'interval {t}: TrainLoss = {value}, gradient = {gradient}, w = {w}')
+```
+
+### The problem with gradient descent
+
+One problem (but not the only problem) with gradient descent is that it is slow.
+
+In particular, the slowness here arises from trying to train large scale data in the millions. (Which is modest as of 2020 standards)
+
+Each gradient calculation has to sum over all existing feature points before we can even move the weight vector closer to the minimum even once.
+
+### Stochastic Gradient Descent's Insight
+
+The insight is that $TrainLoss(\bold{w})$ is merely the average of $Loss(x, y, \bold{w})$ from each individual data point in $D_{train}$.
+
+This means that $Loss(x, y, \bold{w})$ for one or some subset of the data point is partially representative of $TrainLoss(\bold{w})$.
+
+Hence, instead of waiting to calculate $TrainLoss(\bold{W})$, we simply calculate $Loss(x, y, \bold{w})$ and march in the opposite of that direction.
+
+Formally stochastic gradient descent is:
+$$\begin{aligned}&\text{Initialize } \bold{w} = [0 \cdots 0] \\\\&\text{For } T = 1 \cdots T: \\\\& \space \space \space \space \text{For an } (x, y) \text{ in } D_{train}:\\\\& \space \space \space \space \space \space \space \space \bold{w} \bold{w} - \eta \space \nabla_\bold{w} Loss(x, y, \bold{w})\end{aligned} $$
+
+### Deciding Step Size
+
+Step size determines how fast we move in the direction towards what we think is the minimum.
+
+For SGD, step size becomes even more important because the steps we are taking are noisier.
+
+Here's a visual of what step-sizes are like:
+
+![step size visualization](/images/cs221/reflex_model/step_size.png "step size visualization")
+
+Some strategies:
+
+- **Constant** $\eta$
+- **Decreasing** $\eta$
+  - $\eta = \frac{1}{\sqrt{\text{Number of updates}}}$
+  - $\eta = \frac{1}{\text{Number of updates}}$
+
+### Putting it together: SGD
+
+```python
+point = [(np.array([1, 2, 3, ... n]), 4), (np.array([1, 2, 3, ... n]), 5)]
+def least_squared_loss(w, i):
+    x, y = points[i]
+    return (w.dot(x) - y) ** 2
+def dLeast_squared_loss(w, i):
+    x, y = points[i]
+    return 2 * (w.dot(x) - y) * x
+
+def stochastic_gradient_descent(F, dF, d, n):
+    w = np.zeros(d)
+    eta = 1
+    num_updates = 0
+    interval = 10000
+    for t in range(interval):
+        for i in range(n): # Updating weights based on each training data
+            value = least_squared_loss(w, i)
+            gradient = dLeast_squared_loss(w, i)
+            num_updates += 1
+            eta = 1.0 / num_updates # adjusting step_size to become smaller as we get closer to minimum point
+            w = w - eta * gradient
+        print(f'interval {t}: f(w) = {value}, dF(w) = {gradient}, w = {w}')
+```
+
+[optimization]: ../optimization-in-artificial-intelligence/#continuous-optimization

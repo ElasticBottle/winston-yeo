@@ -1,0 +1,185 @@
+---
+title: "Logical Analysis"
+publishedAt: 2020-09-16T17:19:19+08:00
+slug: "intro-proofs"
+summary: "A short introduction to logical Analysis"
+keywords: ["MATH135", "Waterloo", "logical Operators", "Logic"]
+isDraft: false
+tags: ["MATH135", "Waterloo"]
+toc: false
+--- 
+
+
+## Conjecture
+
+> A statement for which there is evidence or strong speculation that it is true but no known proof.
+
+## Three Laws of Logic
+
+The fact that either $p$ or $\neg p$ is $True$ follows the law of excluded middle.
+
+The law of excluded middle is one of the three laws of logic.
+
+Another is the law of identity - each thing is identical to itself.
+
+Finally, there's the law of noncontradictory - contradictory propositions cannot both be true at the same time in the same sense. E.g. $a \text{ is } b$ and $a \text{ is not } b$
+
+## Truth Tables
+
+For any statement $p$, we can negate it with $\neg p$
+
+The possibilities are listed as a truth table below
+
+| $p$   | $\neg p$ |
+| ----- | -------- |
+| True  | False    |
+| False | True     |
+
+## Compound and Component statements
+
+A compound statement is a statement composed of several individual statements, each of which is called a component statement.
+
+| $A$   | $B$   | $A \land B$ |
+| ----- | ----- | ----------- |
+| True  | True  | True        |
+| True  | False | False       |
+| False | True  | False       |
+| False | False | False       |
+
+Here $A \land B$ is referred too as the conjunction of $A$ and $B$.
+
+| $A$   | $B$   | $A \lor B$ |
+| ----- | ----- | ---------- |
+| True  | True  | True       |
+| True  | False | True       |
+| False | True  | True       |
+| False | False | False      |
+
+Here$A \lor B$ is referred to as the disjunction of $A$ and $B$.
+
+## De Morgan's law
+
+When you combine the negation, $\neg$, and logical operators, $\land \lor$, you get some cool effects.
+
+In particular:
+
+$$\neg (A \land B) \equiv \neg{A} \lor \neg{B}$$
+$$\neg (A \lor B) \equiv \neg{A} \land \neg{B}$$
+
+## Distributive, Commutative, and Associative
+
+This is one area where you keep forgetting what goes where. It's time we make some dual enforcing encoding to make it stick.
+
+* Distributive - Intuitively, this mean $a(b + c) = ab + ac$
+* Associative - Intuitively, this mean the order can be shared around $a \cdot (b \cdot c) = (a \cdot b) c$
+* Commutative - This means that flipping stuff back and forth (just like communication!) is okay $ab = ba$
+
+Among its own kind, $\land$ and $\lor$ are commutative and associative. Among each other, they are distributive.
+
+Here's a formal summary:
+
+$$\text{Associative }\\(A\land{B})\land{C}=A\land{(B\land{C})}\\(A\lor{B})\lor{C}=A\lor{(B\lor{C})}$$
+$$\text{Commutative }\\A\land{B}=B\land{A}\\A\lor{B}=B\lor{A}$$
+$$\text{Distributive }\\A\land (B\lor C)=(A\land{B}) \lor (A \land{C})\\A\lor (B\land C)=(A\lor{B}) \land (A \lor{C})$$
+
+## Implications
+
+An implication simply means that if $A$ was true, then $B$ must be true. $A \implies B$
+
+$A$ is referred too as the **Hypothesis** and $B$ is the **conclusion**.
+
+Another way to say it is that $A$ is the ***antecedent***, and $B$ is the ***consequence***
+
+| $A$   | $B$   | $A \implies B$ |
+| ----- | ----- | -------------- |
+| True  | True  | True           |
+| True  | False | False          |
+| False | True  | True           |
+| False | False | True           |
+
+The implications when the hypothesis is false is known as vacuously true.  
+
+Something being vacuously true is equivalent to saying that because we cannot know the truth of the implication if our hypothesis is false, we will give it the benefit of the doubt.
+
+### Some implications of implications
+
+$$(A \lor B) \implies C \equiv (A \implies C) \land (B \implies C)$$
+$$A \implies B \equiv \neg{A} \lor B$$
+$$\neg{(A \implies B)} \equiv A \land \neg{B}$$
+
+The last two statements are actually just the application of De Morgan's Law.
+
+To prove that a hypothesis is false, we simply need to show that the hypothesis can be true while the negation of the consequence is true. $A\land{\neg{B}}$
+
+Implications are often counter-intuitive because we assume that $A \implies{B} \equiv \neg{A} \implies \neg{B}$. This is false
+
+## Implications in the context of Quantified Statements
+
+With the concept of implications firmly down, let us turn towards understanding it in the context of quantified statements.
+
+Consider:
+
+$$\forall x \in \mathbb{R}, (x > 4) \implies (x^2 > 9)$$
+
+To prove the statement false, we need to find some values of $x$ for which the **hypothesis** is **true** while the **conclusion** is **false**.
+
+Otherwise, the statement is true.
+
+It does not matter that the both the hypothesis and consequence can be false or the hypothesis false while the consequence true for some values of $x$. The implication is not disproven.
+
+To solve this question, consider 4 cases:
+
+* $x \lt -3$
+* $-3 \le x \le 3$
+* $3 \lt x \le 4$
+* $x \gt 4$
+
+In the first 3 cases, the hypothesis is false and so it does not matter whether the conclusion is true or false. Is is simply vacuously true.
+
+For the last case, the hypothesis is true and the conclusion is true.
+
+Since for all cases, there is no case where the hypothesis is true and the conclusion is false, we conclude that the **statement is true**.
+
+Often, it is enough to consider the cases for which the hypothesis holds.
+
+## Converse and Contrapositive
+
+**Converse** refers to the reverse implication. $A \implies B$ is the converse of $B \implies A$
+
+Converse are not logically equivalent as shown in the table below:
+
+| $A$   | $B$   | $A \implies B$ | $B \implies A$ |
+| ----- | ----- | -------------- | -------------- |
+| True  | True  | True           | True           |
+| True  | False | False          | True           |
+| False | True  | True           | False          |
+| False | False | True           | True           |
+
+Contrapositive refers to the negation oif the hypothesis and conclusion in a converse statement.
+$\neg B \implies \neg A$ is the contrapositive of $A \implies B$.
+
+Logically speaking, these are the same:
+
+$$\begin{aligned} \neg B \implies \neg A &\equiv \neg (\neg B) \lor \neg A\\ &\equiv B \lor \neg A\\ &\equiv \neg A \lor B \\ &\equiv A \implies{B} \end{aligned}$$
+
+## If and Only If
+
+If and only If is written as $A \iff B$
+
+| $A$   | $B$   | $A \implies B$ | $B \implies A$ | $A \iff B$ | $(A \implies B) \land (B \implies A)$ |
+| ----- | ----- | -------------- | -------------- | ---------- | ------------------------------------- |
+| True  | True  | True           | True           | True       | True                                  |
+| True  | False | False          | True           | False      | False                                 |
+| False | True  | True           | False          | False      | False                                 |
+| False | False | True           | True           | True       | True                                  |
+
+From the truth table, it is easy to see that $A \iff B \equiv (A \implies B) \land (B \implies A)$
+
+### Iff in the context of quantified Statements
+
+$\forall x \in \mathbb{R}, P(x) \iff Q(x) \equiv (\forall x \in \mathbb{R}, P(x) \implies Q(x)) \land (\forall x \in \mathbb{R}, Q(x) \implies P(x))$
+
+In order to prove that the statement is true, we either have to:
+
+* Show that the first implication and the second implication are true
+* Show that both sides $A$ and $B$ are true or false for the same range of values.

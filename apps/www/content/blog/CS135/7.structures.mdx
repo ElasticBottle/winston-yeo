@@ -1,0 +1,88 @@
+---
+title: "Structures"
+publishedAt: 2020-10-18T10:16:12+08:00
+slug: "structures-in-racket"
+summary: "Building complicated data types"
+keywords: ["CS135", "Waterloo", "structures", "DrRacket"]
+isDraft: false
+tags: ["CS135", "Waterloo"]
+toc: false
+---
+
+Structures are compound data. Compound data are data that always occur together.
+
+For example, this could be a employee's name with their occupation and job description.
+
+To create such a data type, we can define a constructor, a predicate, along with getters to access data within our compound data.
+
+In racket, defining a structure will look something like:
+
+```racket
+(define-struct Employee (name occupation desc))
+;; A <type-name> (<English-name>) is a (make-<sname> <type> ...)
+```
+
+Using the `define-struct` function gives us back the total number of parameters + 2 functions.
+
+One function for retrieving each parameter, one constructor, and one predicate.
+
+Once defined, we can create our structure with `(make-employee "NAME" "JOB" "DESC")`.
+
+`(make-employee "NAME" "JOB" "DESC")` also becomes a value and will not be simplified into a list or any core data type that seems appropriate.
+
+## Modifying Structures value
+
+Because racket is a functional programming language, it does not allow us to modify values directly.
+
+Instead, we create a new structure with changing the data where we want too before initialization.
+
+## Structure templates
+
+For functions taking a particular structure, we simply have all the accessor present.
+
+```racket
+(define (emplooyee-template e)
+    (... (employee-name e)
+    ... (employee-job e)
+    ... (emplooyee-desc e) ... ))
+```
+
+## Mixed Data
+
+With structures defined, we can combine multiple structures into one cohesive application
+
+For example, there are the structures `desktops` and `laptops`.
+
+We can then have a mixed data `computers` that is either one of `desktops` and `laptops`.
+
+The template for `computers` will then check for either of the types and include their templates.
+
+```racket
+;; computers-template: Computers -> Any
+(define (computers-template computer)
+    (cond
+        [(desktops? computer) (... (desktop-template computer))]
+        [(laptops? computer) (... (laptop-template computer))]))
+```
+
+Interesting to note is that `define-struct` does not actually care about the type of parameters being fed in.
+
+Therefore, we might want to create type safe constructors just to be doubly sure.
+
+## Structure versus List
+
+A `define-struct` seems to be very similar to a plain old `list`, and that is kind of right.
+
+Other than the fact that we have fancy accessor instead of `first, second` etc, and a predicate, we do not get much more.
+
+Here's some of the advantages of Structures:
+
+- Cleaner code due to cleaner and more specific names
+- Lots of automatically generated code to access and check for type
+- Prevent accession error with the generated code that allows to retrieve specific fields
+
+advantages of `list`:
+
+- More compact. No need to define all the extra definitions
+- Functions are more general. `first item` will work on all list, not just a specific one.
+  - Comparatively, we have to make check for the structure type first before using the appropriate accessors.

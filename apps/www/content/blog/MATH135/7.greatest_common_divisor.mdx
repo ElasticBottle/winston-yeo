@@ -1,0 +1,109 @@
+---
+title: "The Greatest Common Divisor"
+publishedAt: 2020-10-20T23:30:19+08:00
+slug: "greatest-common-divisor"
+summary: "An introduction to the Greatest Common Divisor"
+keywords: ["MATH135", "Waterloo", "Greatest Common Divisor","GCD", "Proofs"]
+isDraft: false
+tags: ["MATH135", "Waterloo"]
+toc: false
+---
+
+To start, let us consider absolute numbers:
+
+$$\forall x \in \mathbb{R}, x = |x| \lor x < |x| \equiv x \leq |x|$$
+
+## Bounds By Divisibility (BBD)
+
+Bounds By Divisibility states that if $a \mid b$, and $b\neq 0$, then $a \leq |b|$.
+
+Proof:
+
+Let $a, b \in \mathbb{Z}$ be given. Let us assume that $a \mid b$, and $b\neq 0$
+
+Note that integers are either positive or negative.
+
+Consider $b < 0$.
+
+Since $a \mid b$, by definition it means that $ qa = b$ for some integer $q$. Since $b \neq 0$, $q \neq 0$.
+
+
+
+## Division Algorithm (DA)
+
+The division algorithm states that:
+
+$$\forall a \in \mathbb{Z}, \forall b \in \mathbb{Z^+}, \exists q, r \in \mathbb{Z}, q\neq r, a = qb + r, 0 < r < b$$
+
+To proof, assume that there exists $q_1$ and $r_1$, such that $a = q_1 b + r_1$. Assume also that there exist $q_2$ and $r_2$, such that $a = q_2 b + r_2$.
+
+If that is the case, then we note that $0 < r_1 < b$, and that $0 < r_2 < b \implies -b < r_2 < 0$.
+
+Adding the two inequality, we get $-b < r_1 - r_2 < b$.
+
+Note that $0 = a - a = q_1b + r_1 - (q_2 b + r_2) = (q_1 - q_2)b + (r_2 - r_2)$
+
+Since $q_1, q_2 \in \mathbb{Z}$, using known laws about product and sum of integers, $q_1 - q_2 \in \mathbb{Z}$.
+
+Therefore, it implies that $b\mid r_1 - r_2$. Hence we can write $kb = r_1 - r_2$ where $k \in \mathbb{Z}$.
+
+Substituting into $-b < r_1 - r_2 < b$, we get $-b < kb < b \equiv -1 < k < 1$. Since $k \in \mathbb{Z} \implies k =0$.
+
+If $k = 0, kb = 0, \implies r_1 - r_2 = 0$. Therefore, $r_1 = r_2$.
+
+Substituting this back into $(q_1 - q_2)b + (r_2 - r_2) = 0$, we get $(q_1 - q_2)b =0$. Since $b > 0, b \neq 0 \implies q_1 - q_2 = 0 \implies q_1 = q_2$.
+
+Therefore, both $q$ and $r$ are unique.
+
+## Common Divisor and Greatest Common Divisor (GCD)
+
+A divisor is said to be common between any set of integers (consider 2) iff $a \mid b \land a \mid c$.
+
+A divisor is said to be the greatest common divisor, written $d = \gcd(a, b)$, if and only if, for all other divisor $c$, $c \leq d$. (similar to $lub$ and $glb$.)
+
+If both $a$ and $b$ are $0$, then $\gcd(0,0) = 0$.
+
+Some properties of $\gcd$:
+
+* $\gcd(a, a) = \gcd(a, -a) = |a|$
+* $\gcd(a, 0) = |a|$
+* $\gcd (a, 1) = \gcd (a, -1) = 1$
+
+## Greatest Common Divisor with Remainder
+
+The greatest common divisor with remainder states that:
+
+$$\forall a, b, q, r \in \mathbb{Z}, a = qb + r \implies \gcd(a, b) = \gcd(b, r)$$
+
+Note that this does not have the condition that $0 < r < b$.
+
+Proof:
+
+let $a, b, q, r$ be integers. Note that either $a$ and $b$ are both zero or they are not both zero.
+
+Consider $a$ and $b$ not both zero:
+
+Let us assume that $a = qb +r$. Let $d = \gcd(a,b)$. This implies that $d \mid a \land d \mid b$.
+
+By Divisibility combination of Integers (DIC), $d \mid (a - qb)$.
+
+Since $a= qb + r, a - qb = r$. Therefore, $d \mid r$.
+
+Now let $c$ be a divisor of $b$ and $r$. By DIC, $c \mid qb + r \implies c \mid a$.
+
+Since for any $c \mid r, c\mid b \implies c \mid a$, and $d = \gcd(a, b)$, by definition, $c \leq d$.
+
+Hence $d = \gcd(a, b) = \gcd(b, r)$.
+
+Consider $a$ and $b$ both zero:
+
+In which case, $r = a - qb = 0 - q0 = 0$. Therefore, we get $\gcd(a, b) = \gcd(0,0) = \gcd(b,r)$.
+
+Hence $\gcd(a, b) = \gcd(b,r)$ when both $a$ and $b$ are $0$.
+
+## Euclidean Algorithm
+
+The Euclidean algorithm states that the $\gcd$ for any two integers can be found by recursively applying two propositions from above:
+
+* Divisibility Algorithm
+* Greatest Common Divisor with Reminder

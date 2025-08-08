@@ -1,0 +1,128 @@
+---
+title: "Mathematical Sets"
+publishedAt: 2020-10-20T23:30:19+08:00
+slug: "math-sets"
+summary: "An introduction to Mathematical Sets"
+keywords: ["MATH135", "Waterloo", "Mathematical sets","sets", "Proofs"]
+isDraft: false
+tags: ["MATH135", "Waterloo"]
+toc: false
+---
+
+Sets are often the bedrock when it comes to specifying the domain of any quantified statement.
+
+Some terminology as we dive further in:
+
+* Empty set - can either be denoted as $\{\}$ or $\emptyset$.
+  * Note  that $\{\emptyset\}$ is not an empty set. It is a set containing an empty set!
+* Cardinality - $|S|$ Refers to the number of items within a set. $\emptyset = 0$
+
+## Set Builder Notation
+
+While sets can be listed explicitly, often the sets being dealt with are too big.
+
+In cases like those, we use set builder notations.
+
+Two things are needed:
+
+1. Universe of discourse, $\mathcal{U}$, contains all the objects that we might be interest in
+2. Open sentence, $P(x)$, to specify if a particular $x$ is in our set or not.
+
+With these two ingredients we have the first type of set builder notation:
+
+$$\{x \in \mathcal{U}: P(x)\}$$
+
+The above notation describes a set containing all the object in $\mathcal{U}$ where $P(x)$ is true.
+
+Sometimes, the $:$ is replaced with $\mid$. Others, the $\in \mathcal{U}$ is omitted.
+
+## Second type of set builder notation
+
+The next kind of set builder notation swaps out the open sentence for a function.
+
+$$\{f(x) : x \in \mathcal{U}\}$$
+
+Here, we are specifying a set in the form of $f(x)$ such that $x$ is in $\mathcal{U}$
+
+## Set Builder Notation with Open sentence and function
+
+The last kind of set builder notation combines the open sentence with a function.
+
+$$\{f(x): P(x), x\in \mathcal{U}\}$$
+$$\{f(x): x\in \mathcal{U}, P(x)\}$$
+
+This describes a set in the form of $f(x)$ such that $P(x)$ is true and $x$ in $\mathcal{U}$.
+
+## Pointers on Set Builder Notation
+
+In all three kinds of set builder notation, there is a left and right hand side.
+
+The left hand side indicates typical element in the set.
+
+The right hand side specifies the condition that has to be true for the element to be in the set.
+
+If "extra" copies of a particular value is created, it is ignored (like sets in computer science).
+
+In other words, each item in a set is unique.
+
+## Set Operations
+
+There are four main kinds of set Operations
+
+### Union
+
+$$S \cup T = \{x: x \in S \lor x \in T\}$$
+
+### Intersection
+
+$$S \cap T = \{x: x\in S \land x \in T\}$$
+
+### Difference
+
+$$S - T = \{x: x \in S \land x \notin T\}$$
+
+### Complement
+
+Complement of $S$ is represented as $\bar{S}$.
+
+$$\{x: x \notin S\}$$
+
+With reference to the universe of discourse, the complement can be written as $\bar{S} = \mathcal{U} - S$.
+
+Or in terms of set builder notation $\{x \in \mathcal{U}: x \notin S\}$
+
+## Disjoint sets
+
+When the intersection of two sets is an empty set, we say that they are disjoint, $S \cap T = \emptyset$.
+
+Note that any set intersecting an empty set is also disjoint. $S \cap \emptyset = \emptyset$.
+
+The intersection of a set and its complement is also disjoint. $S \cap \bar{S} = \emptyset$.
+
+## Subsets
+
+$S$ is a subset of $T$ when every set in $S$ is also in $T$. $S \subseteq T$
+
+$S$ is a proper subset of $T$ when every element of $S$ is in $T$ and there exists objects in $T$ not in $S$. $S \subsetneq T$
+
+When a set is not a subset, we write $S \not\subseteq T$.
+
+### Properties of Subsets
+
+* An empty set $\emptyset$ is a subset of every other set.
+* A finite set of $n$ elements has $2^n$ subsets
+  * Proof by Mathematical Induction. (Rough outline)
+    * For the inductive conclusion, we split subsets into one with $k + 1$ and ones without $k + 1$
+    * Every set in without $k + 1$ will become a set with $k+ 1$ by adding $k+ 1$
+    * the same applies for the converse, therefore, the number of subset without $k + 1$ is equal to the number of subset with $k + 1$.
+    * This is the same as twice the number of element with $k$ elements.
+
+## Proving for Subsets
+
+To prove that $S \subseteq T$, we prove the quantified statement $\forall x \in \mathcal{U}, x \in S \implies x \in T$.
+
+When proving for $not\subset$ we simply find a counter example such that the implication for $\subseteq$ is false.
+
+To prove that two sets are equal, it is equivalent to proving that $S = T$.
+
+In quantified statement terms, $x \in \mathcal{U}, x \in S \iff x \in T$.

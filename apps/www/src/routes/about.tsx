@@ -14,34 +14,36 @@ function About() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.4,
-        delayChildren: 0.3,
+        staggerChildren: 0.22,
+        delayChildren: 0.2,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
 
   const headingVariants: Variants = {
-    hidden: { opacity: 0, y: 50, scale: 0.9 },
+    hidden: { opacity: 0, y: 28, scale: 0.98, filter: "blur(6px)" },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
+      filter: "blur(0px)",
       transition: {
-        duration: 1.2,
-        ease: "easeInOut",
+        duration: 0.9,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
 
   const paragraphVariants: Variants = {
-    hidden: { opacity: 0, y: 30, x: -20 },
+    hidden: { opacity: 0, y: 18, x: -14 },
     visible: {
       opacity: 1,
       y: 0,
       x: 0,
       transition: {
-        duration: 1.0,
-        ease: "easeInOut",
+        duration: 0.75,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };

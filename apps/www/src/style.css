@@ -1,3 +1,4 @@
 @import "@rectangular-labs/ui/styles.css";
+@import "katex/dist/katex.min.css";
 
 @source "./**/*.{ts,tsx}";

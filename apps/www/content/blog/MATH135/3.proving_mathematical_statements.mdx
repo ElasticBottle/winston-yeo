@@ -1,0 +1,206 @@
+---
+title: "Proving Mathematical Statements"
+publishedAt: 2020-09-23T17:19:19+08:00
+slug: "proving-math-statements"
+summary: "An introduction to Mathematical Proofs"
+keywords: ["MATH135", "Waterloo", "logical Operators", "Proofs"]
+isDraft: false
+tags: ["MATH135", "Waterloo"]
+toc: false
+---
+
+When it comes to proves, there are some key terms to be defined.
+
+First, a proposition. A proposition is a claim that needs to either be proven or disproven.
+
+There are three main kinds of proposition:
+
+1. Theorem: These are strong propositions.
+2. Lemma: These are subsidiary propositions of a theorem, used to proof the theorem.
+3. Corollary: These are propositions that follow almost immediately from a theorem.
+
+## Direct Proofs
+
+Choose a representatives $x, y \ldots$ from sets $S, T, \ldots$
+
+Use the representatives to show that the open sentence $P(x)$ is true. Starting from left hand side and working our way to the right hand side
+
+Since $x, y\ldots$ can be any member of $S, T, \ldots$ respectively, it must be true for all of $S$, therefore, we conclude the proof.
+
+Never begin by assuming that the open sentence is true!
+
+### Direct Proofs: An Example
+
+Proof that for every real number $x, x^2 + 1 \geq 2x$
+
+We start by identifying that if $x\in \mathbb{R}$, then $x - 1\in \mathbb{R}$
+
+$$\begin{aligned}(x - 1)^2 \geq 0 \implies &x^2 - 2x + 1 \geq 0 \\&x^2 + 1 \geq 2x \text{ (shown)}\end{aligned}$$
+
+Notice how we started by assuming the variable was in the specified domain and went from there.
+
+An alternate strategy is to break the given domain up into sets.
+
+Often, this is done in conjunction with trying to prove universally quantified statements
+
+## Proving Universally Quantified Statements $\forall$
+
+### Case Analysis, a Direct Proofs Method
+
+For example, to prove that $\forall k \in \mathbb{Z} k(k - 1) \geq 0$
+
+Consider 3 separate domains:
+
+- $k \leq -1$
+  - $k \leq -1 \implies k - 1 \leq -2 \implies k(k-1) \geq 2 \geq 0$
+- $k = 0 \cup k = 1$
+  - $k = 1, k (k-1) = 0$
+  - $k = 0, k (k-1) = 0$
+- $k \geq 2$
+  - $k\geq 2\implies k-1 \geq 1 \implies k(k-1) \geq 2 \geq 0$
+
+Of course, rather than just writing pure math, fun as it is, it is important to explain each step in english to make sure that there are no ambiguity.
+
+Like for example, why $k-1 \geq 1 \implies k(k-1) \geq 2$ etc.
+
+### Proving identities
+
+Proving identities is easily done by starting with the left hand side and working your way to the right.
+
+It might be helpful to start from the right and work your way back.
+
+Remember though, proofs should always start with what is given (LHS).
+
+## Disproving Universally Quantified Statements
+
+To disprove a Universally quantified statement, simply find a counter example.
+
+That is, an example within the domain such that the open sentence is false.
+
+## Proving Existentially Quantified Statements $\exists$
+
+To Prove such a statement, often we do what we do when disproving universally quantified statements.
+
+We simply find an example such that the given statement is true.
+
+This can be done is one of two ways:
+
+1. Trial and error (Okay for small domains)
+2. Mathematically
+
+To prove the statement mathematically, we often transform the open sentence into some other form. The quadratic form is one example.
+
+Often, these transformations might result in additional solutions to the original equation, otherwise known as extraneous solutions.
+
+There are two ways to deal with extraneous solutions:
+
+- check against the original open sentence
+- make sure that transformations are invertible.
+  - Something is invertible if the solutions to the transformed equation is exactly the same as the original equation.
+
+The goal is to narrow the values for which we can find an $x$ such that $P(x)$ is true.
+
+We are not assuming that $P(x)$ is true for all $x$!
+
+## Disproving Existentially Quantified Statements
+
+To disprove existentially quantified statements, simply proved the negated statement.
+
+That is, to disprove $\exist x \in \mathbb{R}, P(x)$, prove that $\forall x \in \mathbb{R}, \neg P(x)$
+
+## Proving Nested Quantifiers
+
+If the quantifiers are all of the same kind, either direct proof, counter-example, or example will be sufficient.
+
+If they are of the different kind, then direct proof will be considered with counter-example or example.
+
+## Proving Implications
+
+To prove an implication, $P(x) \implies Q(x)$, assume that the [hypothesis](../MATH%20135/Logical_Analysis_of_Mathematical_Statements.md/#implications) $P(x)$ is true.
+
+Use $P(x)$ to show that the conclusion $Q(x)$ is true.
+
+### Proving Implications: trivial Example
+
+Let's attempt to prove $\forall x \in \mathbb{R}, x > 4 \implies x^2 > 9$ (choosing representative in domain)
+
+Let's assume $x$ to be an arbitrary number $\in \mathbb{R}$.
+
+If $x > 4$, then $x$ is positive. Multiplying both sides by $x$, we get $x^2 >4x$. Multiplying the same equation $x > 4$ by 4 on both sides, we get $4x > 16$. (using the representative $x$ to show $P(x)$ is true)
+
+Therefore, $x^2 > 4x > 16 > 9$. Hence we conclude that $x^2 > 9$ (concluding the proof)
+
+Notice how we used the hypothesis. (In this case at the start)
+
+### Proving harder examples
+
+Often, implications have a domain, definition, or open sentence as the hypothesis.
+
+The conclusion will then often be an open statement.
+
+In these cases, we start with the left hand side of the conclusion's open statement and weave the assumption of the hypothesis inside.
+
+$$\forall s, t, x, y \in \mathbb{R}, x^2+y^2=1 \implies (sx+ty)^2 \leq s^2+t^2.$$
+
+The above quantified statement is one such example. We start with $(sx+ty)^2$ and note how $(sx+ty)^2 + (sx-ty)^2 = s^2 + t^2$
+
+The assumption will also be used in the process.
+
+We then conclude that since $(sx-ty)^2 \geq 0$, $(sx+ty)^2 + 0 \leq (sx+ty)^2 + (sx-ty)^2k = s^2 + t^2$
+
+In cases like these, algebraic manipulation is the name of the game.
+
+### Proving Implications with $\lor$ in hypothesis
+
+When there is a $\lor$ in the hypothesis, we need to prove the implication is true for each case.
+
+That is to say, to prove $a \lor b \implies c$, we need to prove $a \implies c$ and $b \implies c$.
+
+If the cases of the proof are similar, we can write something to the effect of:
+
+- The `case to proof` is similar, and is omitted.
+
+## Proof By Contrapositive
+
+If the hypothesis is too complicated for the given implication, but the conclusion looks easy, a proof by Contrapositive might be in line. Alternatively, when the conclusion is disjunct, as in $A \implies B \lor C$. Then flipping might help too.
+
+Proving by contrapositive lets us flip the conclusion and our hypothesis. Its a free win!
+
+## Proof By Contradiction
+
+Proof by contradiction is based on the law of excluded middle.
+
+That means that for a given statement $A$, either $A$ or $\neg A$ must be false. The compound statement $A \land \neg A$ then is always false.
+
+Thus having the statement $A \land \neg A = True$ is called a contradiction.
+
+There is a strong link between a proof by contradiction and a proof by contrapositive. In the former, when proving $A\implies B$, we try to show $A \land \neg B$. For the latter, we show $\neg B \lor \neg A$
+
+In either case, we use the $\neg B$ to go about our proof.
+
+## Proving for Uniqueness
+
+Uniqueness is like a subset of $\exists$. Instead of one or more, however, we have exactly one element.
+
+There are two main ways to prove for Uniqueness:
+
+- Assume that $P(x)$ and $P(y)$ are true for $x, y \in \mathbb{S}$, then show how this assumption leads to $x=y$
+- Assume that $P(x)$ and $P(y)$ are true for distinct $x, y \in \mathbb{S}$, then show how this assumption leads to a contradiction
+
+## Definitions
+
+Using facts about the equation, hypothesis, domain, can get us only so far. Sometimes we have to use a little extra. This is where definitions come into play.
+
+### Even and Odd
+
+An integer is said to be even if it can be written in the form $2k$ where $k$ is some integer.
+
+An integer is said to be odd if it can be written in the form $2k + 1$ where $k$ is an integer.
+
+The usage of `if` here actually means if and only if. Often, this is implicitly implied in definitions.
+
+### Using definitions to solve proofs
+
+We can apply the definition by saying:
+
+By definition, $\exists k \in \mathbb{Z}$ s.t. $variable = 2k$ (even definition applied)

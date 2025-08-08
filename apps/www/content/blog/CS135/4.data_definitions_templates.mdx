@@ -1,0 +1,106 @@
+---
+title: "Data Definitions"
+publishedAt: 2020-09-22T22:45:12+08:00
+slug: "data-types"
+summary: "Introduction to Date Definitions and templates"
+keywords: ["CS135", "Waterloo", "Data Definitions","Data Templates", "DrRacket"]
+isDraft: false
+tags: ["CS135", "Waterloo"]
+toc: false
+---
+
+## Data Definitions
+
+Recursive data definition: a definition that refers to itself.
+
+Recursive data definition have two parts, a base case that does not refer to itself, and the recursion.
+
+```racket
+A (listof X) is one of:
+* empty
+* (cons X (listof X))
+```
+
+Notice the use of `(listof X)` in defining the data definition.
+
+Other types of data definition can include numbers:
+
+```racket
+;; A Nat is one of:
+;; * 0
+;; * (add1 Nat)
+```
+
+## Templates
+
+A template is a general framework that we develop in order to deal with certain kinds of data definitions.
+
+Of course this means that templates are built on top of data definitions.
+
+We use `...` to represent parts of the template that are to be filled in by the specific problem.
+
+```racket
+;; (listof-X-template lox) PURPOSE
+;; Examples:
+(check-expect (listof-X-template empty) ANSWER)
+(check-expect (listof-X-template (cons X empty)) ANSWER)
+
+;; listof-X-template: (listof X) -> Any
+(define (listof-X-template lox)
+    (cond
+        [(empty? lox) ...]
+        [(cons? lox) (... (first lox)
+                            (listof-X-template (rest lox)))]))
+
+;; Tests
+```
+
+Natural Number template
+
+```racket
+;; (nat-template n): PURPOSE
+;; Examples:
+(check-expect (nat-template 0) ANSWER)
+(check-expect (nat-template 1) ANSWER)
+
+;; nat-template: Num -> Any
+(define (nat-template n)
+  (cond
+    [(zero? n) ...]
+    [else (... n ...
+          ... (nat-template (sub1 n)) ...)])) ; Notice how we did sub1 instead of add1
+```
+
+The key to breaking down the complex case is to think how you will solve the case just one size bigger.
+
+Another thing to note is to consider how to process each case. For example, `empty` cannot be processed further and hence we left `...` in `(empty? lox) ...`. On the other hand, we could process the first element of the non-empty list to combine it with the rest of the list. Hence, we see `(... (first lox) (listof-X-template (rest lox)))`.
+
+The template matching the recursive data definition so easily is not a coincidence.
+
+In particular, the template and data definition are part of a group of recursion known as simple recursion.
+
+## Simple Recursion
+
+A function is considered to employ simple recursion if the arguments in the recursive function call satisfy either of the criterion:
+
+1. The arguments are unchanged.
+2. The arguments are one step closer to the base case. (Hence `sub1` for `nat-template`)
+
+Sometimes, in order to best utilize recursive functions, we need data in form that is not convenient for the user to provide.
+
+For that we use wrapper functions.
+
+## Wrapper Functions
+
+Consider counting the number of characters in a string. You would expect `(count-char #\e "Hello")`.
+
+In reality, your function might have a contract that specifies `count-char: Char (listof Str) -> Int`.
+
+To bridge the divides in reality, we can have a wrapper function that takes `Char Str`, and converts it into `Char (listof Str)` for the recursive function.
+
+In particular, wrapper functions should be:
+
+* Short and simple
+* Calling the main function which does much more
+* Sets up the appropriate condition for calling the other functions.
+  * Often done by converting between data types
