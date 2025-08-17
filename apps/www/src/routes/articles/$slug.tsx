@@ -1,8 +1,10 @@
 import { MDXContent } from "@content-collections/mdx/react";
 import { useTheme } from "@rectangular-labs/ui/components/theme-provider";
+import { Badge } from "@rectangular-labs/ui/components/ui/badge";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { allArticles } from "content-collections";
 import { motion } from "motion/react";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/articles/$slug")({
   component: Article,
@@ -18,6 +20,11 @@ export const Route = createFileRoute("/articles/$slug")({
 function Article() {
   const article = Route.useLoaderData();
   const { theme } = useTheme();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
+
   return (
     <motion.div key={article._meta.path}>
       <div className="mx-auto max-w-3xl lg:max-w-4xl">
@@ -53,7 +60,7 @@ function Article() {
         {/* Article Header */}
         <header className="mb-12">
           <motion.h2
-            className="mb-6 font-bold text-4xl leading-tight md:text-5xl lg:text-6xl"
+            className="mb-6 font-bold text-3xl leading-tight md:text-4xl"
             layoutId={`article-title-${article.title}`}
           >
             {article.title}
@@ -65,12 +72,7 @@ function Article() {
             layoutId={`article-meta-${article.tags.join(",")}-${article.title}`}
           >
             {article.tags.map((tag) => (
-              <span
-                className="rounded-full bg-muted px-4 py-2 font-medium text-muted-foreground text-sm"
-                key={tag}
-              >
-                {tag}
-              </span>
+              <Badge key={tag}>{tag}</Badge>
             ))}
           </motion.div>
 
