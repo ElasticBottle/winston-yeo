@@ -140,16 +140,15 @@ function ArticlesLayout() {
 
           {/* Right side - Articles Content */}
           <LayoutGroup id="articles">
-            <motion.div
+            <div
               className="flex h-full w-full"
-              layout
-              style={{ flexBasis: isDetailRoute ? "100%" : "66.6667%" }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              // style={{ flexBasis: isDetailRoute ? "100%" : "66.6667%" }}
+              // transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="h-full w-full px-8 py-16">
                 <Outlet />
               </div>
-            </motion.div>
+            </div>
           </LayoutGroup>
         </motion.div>
       </div>

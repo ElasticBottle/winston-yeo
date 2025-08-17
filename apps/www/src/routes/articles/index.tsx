@@ -1,8 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { sexyEaseCurve } from "@rectangular-labs/ui/animation/constants";
+import { Badge } from "@rectangular-labs/ui/components/ui/badge";
+import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { allArticles } from "content-collections";
-import { motion, type Variants } from "motion/react";
+import { motion, stagger, type Variants } from "motion/react";
 import { useMemo } from "react";
+import { FancyLink } from "~/components/fancy-link";
 
 const articleServerFn = createServerFn().handler(() => {
   return allArticles.map((article) => {
@@ -72,67 +75,54 @@ function ArticlesList() {
   }
 
   const listItemVariants: Variants = {
-    hidden: { opacity: 0, y: 18, filter: "blur(4px)" },
+    hidden: { opacity: 0, y: 18 },
     visible: {
       opacity: 1,
       y: 0,
-      filter: "blur(0px)",
-      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+      transition: { duration: 0.55, ease: sexyEaseCurve },
     },
-    exit: { opacity: 0, y: -12, transition: { duration: 0.35 } },
   };
 
   return (
     <motion.div
       animate="visible"
-      className="space-y-12"
+      className="space-y-6"
       initial="hidden"
-      transition={{ staggerChildren: 0.08 }}
-      variants={{}}
+      transition={{ delayChildren: stagger(0.06) }}
     >
       {filteredArticles.map((article) => (
         <motion.article
           className="group"
-          key={article._meta.path}
-          layout
+          key={article.slug}
           variants={listItemVariants}
         >
-          <Link
-            className="block"
+          <FancyLink
+            className="block pt-0 pb-1"
             params={{ slug: article.slug }}
             to="/articles/$slug"
           >
-            <div className="mb-4">
-              <motion.h2
-                className="mb-4 font-bold text-3xl transition-colors group-hover:text-primary md:text-4xl"
-                layoutId={`article-title-${article.title}`}
-              >
-                {article.title}
-              </motion.h2>
+            <motion.h2
+              className="pb-2 font-bold text-3xl md:text-4xl"
+              layoutId={`article-title-${article.title}`}
+            >
+              {article.title}
+            </motion.h2>
 
-              {/* Tags */}
-              <motion.div
-                className="mb-6 flex flex-wrap gap-3"
-                layoutId={`article-meta-${article.tags.join(",")}-${article.title}`}
-              >
-                {article.tags.map((tag) => (
-                  <span
-                    className="rounded-full bg-muted px-3 py-1 text-muted-foreground text-sm"
-                    key={tag}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </motion.div>
+            {/* Tags */}
+            <motion.div
+              className="flex flex-wrap gap-2 pb-3"
+              layoutId={`article-meta-${article.tags.join(",")}-${article.title}`}
+            >
+              {article.tags.map((tag) => (
+                <Badge key={tag}>{tag}</Badge>
+              ))}
+            </motion.div>
 
-              {/* Summary if available */}
-              {article.summary && (
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  {article.summary}
-                </p>
-              )}
-            </div>
-          </Link>
+            {/* Summary if available */}
+            {article.summary && (
+              <p className="text-lg text-muted-foreground">{article.summary}</p>
+            )}
+          </FancyLink>
         </motion.article>
       ))}
     </motion.div>

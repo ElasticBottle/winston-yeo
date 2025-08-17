@@ -1,5 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, type Variants } from "motion/react";
+import { sexyEaseCurve } from "@rectangular-labs/ui/animation/constants";
+import { createFileRoute } from "@tanstack/react-router";
+import { motion, stagger, type Variants } from "motion/react";
+import { FancyLink } from "~/components/fancy-link";
 
 export const Route = createFileRoute("/")({
   component: App,
@@ -11,9 +13,8 @@ function App() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.22,
-        delayChildren: 0.15,
-        ease: [0.22, 1, 0.36, 1],
+        delayChildren: stagger(0.15),
+        ease: sexyEaseCurve,
       },
     },
   };
@@ -27,7 +28,7 @@ function App() {
       filter: "blur(0px)",
       transition: {
         duration: 0.9,
-        ease: [0.22, 1, 0.36, 1],
+        ease: sexyEaseCurve,
       },
     },
   };
@@ -39,7 +40,7 @@ function App() {
       x: 0,
       transition: {
         duration: 0.7,
-        ease: [0.22, 1, 0.36, 1],
+        ease: sexyEaseCurve,
       },
     },
   };
@@ -51,7 +52,7 @@ function App() {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.22, 1, 0.36, 1],
+        ease: sexyEaseCurve,
       },
     },
   };
@@ -95,20 +96,20 @@ function App() {
           variants={containerVariants}
         >
           <motion.div variants={linkVariants}>
-            <Link
-              className="cursor-pointer text-2xl transition-colors hover:text-primary md:text-3xl"
+            <FancyLink
+              className="cursor-pointer text-2xl md:text-3xl"
               to="/about"
             >
               About
-            </Link>
+            </FancyLink>
           </motion.div>
           <motion.div variants={linkVariants}>
-            <Link
-              className="cursor-pointer text-2xl transition-colors hover:text-primary md:text-3xl"
+            <FancyLink
+              className="cursor-pointer text-2xl md:text-3xl"
               to="/articles"
             >
               Articles
-            </Link>
+            </FancyLink>
           </motion.div>
         </motion.div>
       </motion.div>
