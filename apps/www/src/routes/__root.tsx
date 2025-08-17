@@ -1,4 +1,7 @@
-import { ThemeProvider } from "@rectangular-labs/ui/components/theme-provider";
+import {
+  ThemeProvider,
+  ThemeToggle,
+} from "@rectangular-labs/ui/components/theme-provider";
 import {
   SidebarInset,
   SidebarProvider,
@@ -68,6 +71,7 @@ function RootLayout() {
       </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeToggle className="absolute top-2 right-2" />
           <SidebarProvider>
             <BlogSidebar />
             <SidebarInset>
