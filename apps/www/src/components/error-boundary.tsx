@@ -1,3 +1,4 @@
+import { Button } from "@rectangular-labs/ui/components/ui/button";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 import {
   ErrorComponent,
@@ -20,7 +21,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
     <div className="flex min-w-0 flex-1 flex-col items-center justify-center gap-6 p-4">
       <ErrorComponent error={error} />
       <div className="flex flex-wrap items-center gap-2">
-        <button
+        <Button
           className="rounded bg-gray-600 px-2 py-1 font-extrabold text-white uppercase dark:bg-gray-700"
           onClick={() => {
             router.invalidate();
@@ -28,7 +29,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
           type="button"
         >
           Try Again
-        </button>
+        </Button>
         {isRoot ? (
           <Link
             className="rounded bg-gray-600 px-2 py-1 font-extrabold text-white uppercase dark:bg-gray-700"
