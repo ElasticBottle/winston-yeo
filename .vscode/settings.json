@@ -46,10 +46,12 @@
     "millis",
     "oklch",
     "orpc",
+    "Playmatic",
     "simplewebauthn",
     "Sonner",
     "totp",
     "turso",
-    "Unlazied"
+    "Unlazied",
+    "Yuen"
   ]
 }
