@@ -3,14 +3,11 @@ import { sexyEaseCurve } from "@rectangular-labs/ui/animation/constants";
 import { useTheme } from "@rectangular-labs/ui/components/theme-provider";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { allArticles } from "content-collections";
 import { motion, stagger, type Variants } from "motion/react";
+import { getArticleBySlug } from "~/lib/article";
 
 const aboutDetails = createServerFn().handler(() => {
-  const aboutArticle = allArticles.filter(
-    (article) => article.slug === "about",
-  );
-  return aboutArticle[0];
+  return getArticleBySlug("about");
 });
 
 export const Route = createFileRoute("/about")({

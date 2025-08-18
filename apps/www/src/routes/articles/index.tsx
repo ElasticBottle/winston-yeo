@@ -2,19 +2,13 @@ import { sexyEaseCurve } from "@rectangular-labs/ui/animation/constants";
 import { Badge } from "@rectangular-labs/ui/components/ui/badge";
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { allArticles } from "content-collections";
 import { motion, stagger, type Variants } from "motion/react";
 import { useMemo } from "react";
 import { FancyLink } from "~/components/fancy-link";
+import { getArticlesSummary } from "~/lib/article";
 
 const articleServerFn = createServerFn().handler(() => {
-  return allArticles.map((article) => {
-    return {
-      ...article,
-      mdx: undefined,
-      content: undefined,
-    };
-  });
+  return getArticlesSummary();
 });
 
 export const Route = createFileRoute("/articles/")({

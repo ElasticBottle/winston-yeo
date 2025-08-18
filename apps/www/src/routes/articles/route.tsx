@@ -1,13 +1,19 @@
+import { sexyEaseCurve } from "@rectangular-labs/ui/animation/constants";
 import {
   createFileRoute,
   Outlet,
   useMatchRoute,
   useNavigate,
 } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
 import { type } from "arktype";
-import { allArticles } from "content-collections";
 import { LayoutGroup, motion } from "motion/react";
 import { useMemo, useState } from "react";
+import { getArticlesSummary } from "~/lib/article";
+
+const getArticleSummary = createServerFn().handler(() => {
+  return getArticlesSummary();
+});
 
 const articlesSearchSchema = type({
   "search?": "string|undefined",
@@ -17,9 +23,13 @@ const articlesSearchSchema = type({
 export const Route = createFileRoute("/articles")({
   component: ArticlesLayout,
   validateSearch: articlesSearchSchema,
+  loader: async () => {
+    return await getArticleSummary();
+  },
 });
 
 function ArticlesLayout() {
+  const articles = Route.useLoaderData();
   const search = Route.useSearch();
   const navigate = useNavigate({ from: "/articles" });
   const matchRoute = useMatchRoute();
@@ -31,11 +41,11 @@ function ArticlesLayout() {
   // Get all unique tags from articles
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
-    allArticles.forEach((article) => {
+    articles.forEach((article) => {
       article.tags.forEach((tag) => tagSet.add(tag));
     });
     return Array.from(tagSet).sort();
-  }, []);
+  }, [articles]);
 
   const handleSearchChange = (searchValue: string) => {
     void navigate({
@@ -65,7 +75,7 @@ function ArticlesLayout() {
       <div className="mx-auto flex h-full max-w-6xl">
         <motion.div
           className="flex h-full w-full flex-col lg:flex-row lg:gap-16"
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: sexyEaseCurve }}
         >
           {/* Left side - Search and Filters */}
           <motion.div
@@ -83,7 +93,7 @@ function ArticlesLayout() {
                 void navigate({ to: "/articles" });
               }
             }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.55, ease: sexyEaseCurve }}
           >
             <motion.h1 className="mb-12 font-bold text-5xl md:text-6xl" layout>
               Articles
@@ -143,7 +153,7 @@ function ArticlesLayout() {
             <div
               className="flex h-full w-full"
               // style={{ flexBasis: isDetailRoute ? "100%" : "66.6667%" }}
-              // transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              // transition={{ duration: 0.6, ease: sexyEaseCurve }}
             >
               <div className="h-full w-full px-8 py-16">
                 <Outlet />

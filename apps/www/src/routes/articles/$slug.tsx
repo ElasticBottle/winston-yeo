@@ -2,14 +2,14 @@ import { MDXContent } from "@content-collections/mdx/react";
 import { useTheme } from "@rectangular-labs/ui/components/theme-provider";
 import { Badge } from "@rectangular-labs/ui/components/ui/badge";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { allArticles } from "content-collections";
 import { motion } from "motion/react";
 import { useEffect } from "react";
+import { getArticleBySlug } from "~/lib/article";
 
 export const Route = createFileRoute("/articles/$slug")({
   component: Article,
   loader: ({ params }) => {
-    const article = allArticles.find((article) => article.slug === params.slug);
+    const article = getArticleBySlug(params.slug);
     if (!article) {
       throw notFound();
     }
