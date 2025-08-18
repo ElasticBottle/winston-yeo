@@ -12,14 +12,9 @@ export function MobileNav({ className }: MobileNavProps) {
   return (
     <div className={cn("md:hidden", className)}>
       {/* Top Bar */}
-      <div className="fixed top-0 right-0 left-0 z-50 border-gray-300 border-b bg-gray-100">
+      <div className="fixed top-0 right-0 left-0 z-50 h-16 border-b bg-background">
         <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-400 font-bold text-black">
-              W
-            </div>
-            <span className="ml-3 font-medium text-lg">Menu</span>
-          </div>
+          <div />
           <button
             className="rounded-lg p-2 transition-colors hover:bg-gray-100"
             onClick={() => setIsOpen(!isOpen)}
@@ -53,12 +48,12 @@ export function MobileNav({ className }: MobileNavProps) {
 
         {/* Dropdown Menu */}
         {isOpen && (
-          <div className="border-gray-300 border-t bg-gray-100 shadow-lg">
+          <div className="bg-background shadow-lg">
             <nav className="px-4 py-2">
               <ul className="space-y-1">
                 <li>
                   <Link
-                    className="block rounded-lg px-2 py-3 text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900"
+                    className="block rounded-lg px-2 py-3 text-muted-foreground transition-colors"
                     onClick={() => setIsOpen(false)}
                     to="/"
                   >
@@ -67,7 +62,7 @@ export function MobileNav({ className }: MobileNavProps) {
                 </li>
                 <li>
                   <Link
-                    className="block rounded-lg px-2 py-3 text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900"
+                    className="block rounded-lg px-2 py-3 text-muted-foreground transition-colors"
                     onClick={() => setIsOpen(false)}
                     to="/about"
                   >
@@ -76,7 +71,7 @@ export function MobileNav({ className }: MobileNavProps) {
                 </li>
                 <li>
                   <Link
-                    className="block rounded-lg px-2 py-3 text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900"
+                    className="block rounded-lg px-2 py-3 text-muted-foreground transition-colors"
                     onClick={() => setIsOpen(false)}
                     to="/articles"
                   >

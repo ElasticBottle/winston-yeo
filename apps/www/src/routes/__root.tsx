@@ -76,11 +76,9 @@ function RootLayout() {
             <BlogSidebar />
             <SidebarInset>
               <MobileNav />
-              <div className="min-h-screen">
-                <AnimatePresence mode="wait">
-                  <Outlet />
-                </AnimatePresence>
-              </div>
+              <AnimatePresence mode="sync">
+                <Outlet />
+              </AnimatePresence>
             </SidebarInset>
           </SidebarProvider>
         </ThemeProvider>

@@ -58,12 +58,12 @@ function App() {
   };
 
   return (
-    <div className="container mx-auto flex h-full min-h-screen w-full">
+    <div className="container mx-auto flex h-full w-full px-4">
       <div className="flex-1" />
 
       <motion.div
         animate="visible"
-        className="flex min-h-screen flex-col justify-center gap-28"
+        className="flex flex-col justify-center gap-28"
         initial="hidden"
         variants={containerVariants}
       >
