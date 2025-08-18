@@ -99,7 +99,7 @@ export function BlogSidebar() {
                           }
                         >
                           <Link
-                            className="hover:bg-transparent"
+                            className="flex justify-center hover:bg-transparent"
                             to={item.pathname}
                           >
                             {item.label}

@@ -71,7 +71,7 @@ function RootLayout() {
       </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ThemeToggle className="absolute top-2 right-2" />
+          <ThemeToggle className="absolute top-2 right-2 z-10" />
           <SidebarProvider>
             <BlogSidebar />
             <SidebarInset>
