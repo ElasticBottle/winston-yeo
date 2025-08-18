@@ -5,6 +5,7 @@ import {
   EyeOffIcon,
   FileIcon,
   Loader2,
+  MenuIcon,
   MoonIcon,
   SunIcon,
 } from "lucide-react";
@@ -89,6 +90,7 @@ export const Spinner = Loader2;
 export const ArrowUp = ArrowUpIcon;
 export const ArrowDown = ArrowDownIcon;
 export const File = FileIcon;
+export const Menu = MenuIcon;
 
 export const TanStack = (props: SVGProps<SVGSVGElement>) => (
   <svg
