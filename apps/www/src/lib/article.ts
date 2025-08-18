@@ -22,7 +22,7 @@ export function getArticlesSummary() {
 
 export function getArticleBySlug(slug: string) {
   const article = allArticles.filter((article) => {
-    return article.slug === slug;
+    return article.slug.toLowerCase() === slug.toLowerCase();
   });
   return article[0];
 }
