@@ -7,6 +7,14 @@ import { useMemo } from "react";
 import { FancyLink } from "~/components/fancy-link";
 import { getArticlesSummary } from "~/lib/article";
 
+const listItemVariants: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: sexyEaseCurve },
+  },
+};
 const articleServerFn = createServerFn().handler(() => {
   return getArticlesSummary();
 });
@@ -32,11 +40,9 @@ function ArticlesList() {
       filtered = filtered.filter(
         (article) =>
           article.title.toLowerCase().includes(searchTerm) ||
-          (article.summary?.toLowerCase() ?? "").includes(searchTerm) ||
+          (article.summary ?? "").toLowerCase().includes(searchTerm) ||
           article.tags.some((tag) => tag.toLowerCase().includes(searchTerm)) ||
-          (article.keywords ?? []).some((kw) =>
-            kw.toLowerCase().includes(searchTerm),
-          ),
+          article.keywords.some((kw) => kw.toLowerCase().includes(searchTerm)),
       );
     }
 
@@ -49,15 +55,7 @@ function ArticlesList() {
       );
     }
 
-    // Sort by date if available, otherwise by title
-    return filtered.sort((a, b) => {
-      if (a.publishedAt && b.publishedAt) {
-        return (
-          new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
-        );
-      }
-      return a.title.localeCompare(b.title);
-    });
+    return filtered;
   }, [search.search, search.tag, articles]);
 
   if (filteredArticles.length === 0) {
@@ -67,15 +65,6 @@ function ArticlesList() {
       </div>
     );
   }
-
-  const listItemVariants: Variants = {
-    hidden: { opacity: 0, y: 18 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.55, ease: sexyEaseCurve },
-    },
-  };
 
   return (
     <motion.div
