@@ -14,7 +14,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { FancyLinkVariant } from "./fancy-link";
 
-const menuItems = [
+export const MENU_ITEMS = [
   {
     label: "Home",
     pathname: "/" as const,
@@ -76,7 +76,7 @@ export function BlogSidebar() {
             <SidebarMenu>
               <AnimatePresence initial={false}>
                 {open &&
-                  menuItems.map((item, index) => (
+                  MENU_ITEMS.map((item, index) => (
                     <motion.div
                       animate={{ opacity: 1, x: 0, y: 0 }}
                       exit={{ opacity: 0, x: -22, y: 14 }}

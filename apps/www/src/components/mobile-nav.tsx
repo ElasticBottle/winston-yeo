@@ -1,88 +1,67 @@
+import * as Icon from "@rectangular-labs/ui/components/icon";
+import { ThemeToggle } from "@rectangular-labs/ui/components/theme-provider";
+import { Button } from "@rectangular-labs/ui/components/ui/button";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTrigger,
+} from "@rectangular-labs/ui/components/ui/drawer";
+import { Separator } from "@rectangular-labs/ui/components/ui/separator";
 import { cn } from "@rectangular-labs/ui/utils/cn";
-import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { Link, useLocation } from "@tanstack/react-router";
+import { MENU_ITEMS } from "./blog-sidebar";
 
 interface MobileNavProps {
   className?: string;
 }
 
 export function MobileNav({ className }: MobileNavProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <div className={cn("md:hidden", className)}>
-      {/* Top Bar */}
-      <div className="fixed top-0 right-0 left-0 z-50 h-16 border-b bg-background">
-        <div className="flex items-center justify-between px-4 py-3">
-          <div />
-          <button
-            className="rounded-lg p-2 transition-colors hover:bg-gray-100"
-            onClick={() => setIsOpen(!isOpen)}
-            type="button"
-          >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <title>Menu</title>
-              {isOpen ? (
-                <path
-                  d="M6 18L18 6M6 6l12 12"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              ) : (
-                <path
-                  d="M4 6h16M4 12h16M4 18h16"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              )}
-            </svg>
-          </button>
+      <Drawer direction="right">
+        {/* Top Bar */}
+        <div className="fixed top-0 right-0 left-0 z-50 flex h-16 items-center justify-between border-b bg-background px-4 py-3">
+          <ThemeToggle />
+          <DrawerTrigger asChild>
+            <Button size={"icon"} variant={"ghost"}>
+              <Icon.Menu />
+            </Button>
+          </DrawerTrigger>
         </div>
 
-        {/* Dropdown Menu */}
-        {isOpen && (
-          <div className="bg-background shadow-lg">
-            <nav className="px-4 py-2">
-              <ul className="space-y-1">
-                <li>
-                  <Link
-                    className="block rounded-lg px-2 py-3 text-muted-foreground transition-colors"
-                    onClick={() => setIsOpen(false)}
-                    to="/"
-                  >
-                    <span className="font-medium">Home</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="block rounded-lg px-2 py-3 text-muted-foreground transition-colors"
-                    onClick={() => setIsOpen(false)}
-                    to="/about"
-                  >
-                    <span className="font-medium">About</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="block rounded-lg px-2 py-3 text-muted-foreground transition-colors"
-                    onClick={() => setIsOpen(false)}
-                    to="/articles"
-                  >
-                    <span className="font-medium">Articles</span>
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        )}
-      </div>
+        {/* Drawer Content */}
+        <DrawerContent className="bg-background py-2">
+          <DrawerHeader className="text-center">Menu</DrawerHeader>
+          <Separator />
+          <nav className="px-2 py-8">
+            <ul className="space-y-8">
+              {MENU_ITEMS.map((menuItem) => {
+                return (
+                  <li key={menuItem.pathname}>
+                    <DrawerClose asChild>
+                      <Link
+                        className="block text-center text-muted-foreground data-[active=true]:font-bold"
+                        data-active={
+                          location.pathname === menuItem.pathname ||
+                          (menuItem.pathname.length > 1 &&
+                            location.pathname.includes(menuItem.pathname))
+                        }
+                        to={menuItem.pathname}
+                      >
+                        {menuItem.label}
+                      </Link>
+                    </DrawerClose>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </DrawerContent>
+      </Drawer>
 
       {/* Spacer to prevent content from hiding under the fixed header */}
       <div className="h-16" />
