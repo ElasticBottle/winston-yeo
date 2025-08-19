@@ -5,6 +5,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useEffect } from "react";
 import { getArticleBySlug } from "~/lib/article";
+import { seo } from "~/lib/seo";
 
 export const Route = createFileRoute("/articles/$slug")({
   component: Article,
@@ -15,6 +16,26 @@ export const Route = createFileRoute("/articles/$slug")({
     }
     return article;
   },
+  head: ({ loaderData }) => ({
+    meta: [
+      ...(loaderData
+        ? seo({
+            title: loaderData.title,
+            description: loaderData.summary ?? "",
+            keywords: loaderData.keywords.join(", "),
+          })
+        : []),
+    ],
+    links: [
+      {
+        rel: "stylesheet",
+        href: "https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.css",
+        integrity:
+          "sha384-WsHMgfkABRyG494OmuiNmkAOk8nhO1qE+Y6wns6v+EoNoTNxrWxYpl5ZYWFOLPCM",
+        crossOrigin: "anonymous",
+      },
+    ],
+  }),
 });
 
 function Article() {
@@ -97,9 +118,7 @@ function Article() {
         {/* Article Content */}
         <motion.div
           animate={{ opacity: 1 }}
-          className={`prose prose-lg max-w-none ${
-            theme === "dark" ? "prose-invert" : ""
-          }`}
+          className={`prose prose-lg dark:prose-invert max-w-none`}
           initial={{ opacity: 0 }}
           transition={{ duration: 0.35 }}
         >
