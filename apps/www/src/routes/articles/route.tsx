@@ -53,9 +53,11 @@ function ArticlesLayout() {
   // Get all unique tags from articles
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
-    articles.forEach((article) => {
-      article.tags.forEach((tag) => tagSet.add(tag));
-    });
+    for (const article of articles) {
+      for (const tag of article.tags) {
+        tagSet.add(tag);
+      }
+    }
     return Array.from(tagSet).sort();
   }, [articles]);
 

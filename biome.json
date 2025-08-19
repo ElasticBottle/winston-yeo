@@ -66,6 +66,9 @@
     "indentStyle": "space"
   },
   "css": {
+    "linter": {
+      "enabled": false
+    },
     "parser": {
       "cssModules": true
     },
