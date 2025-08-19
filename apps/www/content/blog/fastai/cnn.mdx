@@ -80,11 +80,7 @@ Everything is 0 except for a single 1 in the matrix.
 
 The result is the exact same image copied over with a one pixel border all around. (solved by adding padding)
 
-$$\begin{bmatrix}
-    0 & 0 & 0 \\
-    0 & 1 & 0 \\
-    0 & 0 & 0 \\
-\end{bmatrix}$$
+$$\begin{bmatrix}     0 & 0 & 0 \\     0 & 1 & 0 \\     0 & 0 & 0 \\ \end{bmatrix}$$
 
 ##### Blur Kernels
 
@@ -92,14 +88,7 @@ Both mean and gaussian matrices results in a blurred image.
 
 The mean matrix involving having a 1 by matrix divided by the number of elements in the kernel:
 
-$$
-\frac{1}{9}
-\begin{bmatrix}
-    1 & 1 & 1 \\
-    1 & 1 & 1 \\
-    1 & 1 & 1 \\
-\end{bmatrix}
-$$
+$$ \frac{1}{9} \begin{bmatrix}     1 & 1 & 1 \\     1 & 1 & 1 \\     1 & 1 & 1 \\ \end{bmatrix} $$
 
 The gaussian matrix involves having the values spread out like in a 2d gaussian curve (for a 2d kernel):
 
@@ -116,11 +105,7 @@ $$
 
 The Sobel kernel is useful in detecting edges in an image:
 
-$$\begin{bmatrix}
-    1 & 0 & -1 \\
-    2 & 0 & -2 \\
-    1 & 0 & -1 \\
-\end{bmatrix}$$
+$$\begin{bmatrix}     1 & 0 & -1 \\     2 & 0 & -2 \\     1 & 0 & -1 \\ \end{bmatrix}$$
 
 Above is a left Sobel kernel.
 
@@ -128,11 +113,7 @@ Above is a left Sobel kernel.
 
 The emboss kernel is similar to the sobel kernel in that it helps detect edges. This time, in the diagonal directions.
 
-$$\begin{bmatrix}
-    -2 & -1 & 0 \\
-    -1 & 1 & 1 \\
-    0 & 1 & 2 \\
-\end{bmatrix}$$
+$$\begin{bmatrix}     -2 & -1 & 0 \\     -1 & 1 & 1 \\     0 & 1 & 2 \\ \end{bmatrix}$$
 
 The above is an emboss kernel detecting changes from the top left to bottom right.
 
@@ -191,14 +172,7 @@ This can be done in one of two main ways:
 
 Refers to re-normalizing outputs of the activations a layer in the neural network.
 
-$$
-var(batch) \\
-
-\bar{batch} = \\
-
-normalized = \frac{input - \bar{batch}}{var(batch)} \\
-output = \gamma normalized + \beta
-$$
+$$ var(batch) \\ \bar{batch} = \\ normalized = \frac{input - \bar{batch}}{var(batch)} \\ output = \gamma normalized + \beta$$
 
 Does not work with small batch sizes due to high variance and fluctuation in batch mean and variance.
 
@@ -232,10 +206,7 @@ In particular, we have:
 
 Cross Entropy is then defined as:
 
-$$Loss(x) = - \sum_{i = 0}^{n}t_i\log(s_i) \text{ , where }\\
-n\text{ is the number of classes, }\\
-t\text{ is the ground truth}\\
-s \text{ is the score for that class, derived from }x$$
+$$Loss(x) = - \sum_{i = 0}^{n}t_i\log(s_i) \text{ , where }\\ n\text{ is the number of classes, }\\ t\text{ is the ground truth}\\ s \text{ is the score for that class, derived from }x$$
 
 Variants of cross entropy loss are then used for the two different kind of classification problem.
 
@@ -283,7 +254,7 @@ $$\begin{aligned}Loss(x) &= - \sum_{i = 0}^{1} t_i\log{\sigma(s_i)} \\ &= - [t_0
 
 where $\sigma$ is the sigmoid function.
 
-$$\nabla_{s_i} Loss(x) = t_0(\sigma(s_i) + 1) + (1 - t_0)(\sigma(s_i)$$
+$$\nabla_{s_i} Loss(x) = t_0(\sigma(s_i) + 1) + (1 - t_0)(\sigma(s_i))$$
 
 #### Focal Loss
 

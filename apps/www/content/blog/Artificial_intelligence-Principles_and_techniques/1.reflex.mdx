@@ -22,7 +22,7 @@ Where $f$ is the predictor.
 #### binary classifier
 
 $y$ is either 1 or -1
-$ x \rightarrow f \rightarrow y \in \{+1, -1\}$$
+$$ x \rightarrow f \rightarrow y \in \{+1, -1\}$$
 
 #### Multiclass Classifier
 
@@ -32,7 +32,7 @@ $$\textit{Image} \rightarrow f \rightarrow y \in \{category\}$$
 #### Regression
 
 $y$ is a real number
-$ x \rightarrow f \rightarrow y \in \real$$
+$$ x \rightarrow f \rightarrow y \in \real$$
 
 #### Ranking
 
@@ -81,8 +81,7 @@ Feature extraction would be concerned with the question:
 
 A feature extractor then, returns a set of `feature name: feature value` pair for each input $x$.
 
-$ \text{sleepwalking} \xRightarrow[\text{arbitrary!}]{\text{Feature Extractor}} \begin{bmatrix}\text{< 5 words:} & 1 \\\\\text{fracOfAlpha:} & 1
-\end{bmatrix} $$
+$$\text{sleepwalking} \xRightarrow[\text{arbitrary!}]{\text{Feature Extractor}} \begin{bmatrix}\text{< 5 words:} & 1 \\\\\text{fracOfAlpha:} & 1 \end{bmatrix}$$
 
 The result of the feature extractor results in a feature vector
 
@@ -124,7 +123,7 @@ Score on an example is defined as the weighted combination of features.
 
 It indicates how **confident** we are with our prediction.
 
-$ \bold{w} \cdot \phi (x) = \sum_{j = 1}^{d} \bold{w_j} \phi_j (x), \real^d$$
+$$ \bold{w} \cdot \phi (x) = \sum_{j = 1}^{d} \bold{w_j} \phi_j (x), \real^d$$
 
 ### Putting it together: Linear Predictors
 
