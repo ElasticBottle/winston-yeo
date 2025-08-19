@@ -1,4 +1,7 @@
-import { ThemeProvider } from "@rectangular-labs/ui/components/theme-provider";
+import {
+  ThemeProvider,
+  ThemeToggle,
+} from "@rectangular-labs/ui/components/theme-provider";
 import {
   SidebarInset,
   SidebarProvider,
@@ -68,15 +71,14 @@ function RootLayout() {
       </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeToggle className="absolute top-2 right-2 z-10 hidden md:flex" />
           <SidebarProvider>
             <BlogSidebar />
             <SidebarInset>
               <MobileNav />
-              <div className="min-h-screen">
-                <AnimatePresence mode="wait">
-                  <Outlet />
-                </AnimatePresence>
-              </div>
+              <AnimatePresence mode="sync">
+                <Outlet />
+              </AnimatePresence>
             </SidebarInset>
           </SidebarProvider>
         </ThemeProvider>

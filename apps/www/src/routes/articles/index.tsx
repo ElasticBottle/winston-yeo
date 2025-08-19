@@ -1,23 +1,43 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { sexyEaseCurve } from "@rectangular-labs/ui/animation/constants";
+import { Badge } from "@rectangular-labs/ui/components/ui/badge";
+import {
+  getPages,
+  getPaginationItems,
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@rectangular-labs/ui/components/ui/pagination";
+import { createFileRoute, createLink } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { allArticles } from "content-collections";
-import { motion, type Variants } from "motion/react";
+import { motion, stagger, type Variants } from "motion/react";
 import { useMemo } from "react";
+import { FancyLink } from "~/components/fancy-link";
+import { getArticlesSummary } from "~/lib/article";
 
-const articleServerFn = createServerFn().handler(() => {
-  return allArticles.map((article) => {
-    return {
-      ...article,
-      mdx: undefined,
-      content: undefined,
-    };
-  });
+const listItemVariants: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: sexyEaseCurve },
+  },
+};
+const getArticles = createServerFn().handler(() => {
+  return getArticlesSummary();
 });
+
+const TanstackPaginationLink = createLink(PaginationLink);
+const TanstackPaginationNext = createLink(PaginationNext);
+const TanstackPaginationPrevious = createLink(PaginationPrevious);
 
 export const Route = createFileRoute("/articles/")({
   component: ArticlesList,
   loader: async () => {
-    return await articleServerFn();
+    return await getArticles();
   },
 });
 
@@ -35,11 +55,9 @@ function ArticlesList() {
       filtered = filtered.filter(
         (article) =>
           article.title.toLowerCase().includes(searchTerm) ||
-          (article.summary?.toLowerCase() ?? "").includes(searchTerm) ||
+          (article.summary ?? "").toLowerCase().includes(searchTerm) ||
           article.tags.some((tag) => tag.toLowerCase().includes(searchTerm)) ||
-          (article.keywords ?? []).some((kw) =>
-            kw.toLowerCase().includes(searchTerm),
-          ),
+          article.keywords.some((kw) => kw.toLowerCase().includes(searchTerm)),
       );
     }
 
@@ -52,18 +70,16 @@ function ArticlesList() {
       );
     }
 
-    // Sort by date if available, otherwise by title
-    return filtered.sort((a, b) => {
-      if (a.publishedAt && b.publishedAt) {
-        return (
-          new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
-        );
-      }
-      return a.title.localeCompare(b.title);
-    });
+    return filtered;
   }, [search.search, search.tag, articles]);
 
-  if (filteredArticles.length === 0) {
+  const { currentPage, totalPages, pagedItems } = getPages({
+    items: filteredArticles,
+    currentPage: Number(search.page ?? 1),
+    itemsPerPage: 10,
+  });
+
+  if (pagedItems.length === 0) {
     return (
       <div className="flex h-64 items-center justify-center">
         <p className="text-muted-foreground text-xl">No articles found.</p>
@@ -71,70 +87,90 @@ function ArticlesList() {
     );
   }
 
-  const listItemVariants: Variants = {
-    hidden: { opacity: 0, y: 18, filter: "blur(4px)" },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-    },
-    exit: { opacity: 0, y: -12, transition: { duration: 0.35 } },
-  };
-
   return (
     <motion.div
       animate="visible"
-      className="space-y-12"
+      className="space-y-6"
       initial="hidden"
-      transition={{ staggerChildren: 0.08 }}
-      variants={{}}
+      transition={{ delayChildren: stagger(0.06) }}
     >
-      {filteredArticles.map((article) => (
+      {pagedItems.map((article) => (
         <motion.article
           className="group"
-          key={article._meta.path}
-          layout
+          key={article.slug}
           variants={listItemVariants}
         >
-          <Link
-            className="block"
+          <FancyLink
+            className="block pt-0 pb-1"
             params={{ slug: article.slug }}
             to="/articles/$slug"
           >
-            <div className="mb-4">
-              <motion.h2
-                className="mb-4 font-bold text-3xl transition-colors group-hover:text-primary md:text-4xl"
-                layoutId={`article-title-${article.title}`}
-              >
-                {article.title}
-              </motion.h2>
+            <motion.h2
+              className="pb-2 font-bold text-3xl md:text-4xl"
+              layoutId={`article-title-${article.title}`}
+            >
+              {article.title}
+            </motion.h2>
 
-              {/* Tags */}
-              <motion.div
-                className="mb-6 flex flex-wrap gap-3"
-                layoutId={`article-meta-${article.tags.join(",")}-${article.title}`}
-              >
-                {article.tags.map((tag) => (
-                  <span
-                    className="rounded-full bg-muted px-3 py-1 text-muted-foreground text-sm"
-                    key={tag}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </motion.div>
+            {/* Tags */}
+            <motion.div
+              className="flex flex-wrap gap-2 pb-3"
+              layoutId={`article-meta-${article.tags.join(",")}-${article.title}`}
+            >
+              {article.tags.map((tag) => (
+                <Badge key={tag}>{tag}</Badge>
+              ))}
+            </motion.div>
 
-              {/* Summary if available */}
-              {article.summary && (
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  {article.summary}
-                </p>
-              )}
-            </div>
-          </Link>
+            {/* Summary if available */}
+            {article.summary && (
+              <p className="text-lg text-muted-foreground">{article.summary}</p>
+            )}
+          </FancyLink>
         </motion.article>
       ))}
+
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <TanstackPaginationPrevious
+              disabled={currentPage === 1}
+              search={{
+                page: currentPage - 1,
+              }}
+              to="/articles"
+            />
+          </PaginationItem>
+
+          {getPaginationItems({ currentPage, totalPages }).map((item) => (
+            <PaginationItem key={item.key}>
+              {item.kind === "ellipsis" ? (
+                <PaginationEllipsis />
+              ) : (
+                <TanstackPaginationLink
+                  isActive={item.value === currentPage}
+                  search={{
+                    page: item.value,
+                  }}
+                  to="/articles"
+                >
+                  {item.value}
+                </TanstackPaginationLink>
+              )}
+            </PaginationItem>
+          ))}
+
+          <PaginationItem>
+            <TanstackPaginationNext
+              disabled={currentPage === totalPages}
+              search={{
+                page: currentPage + 1,
+              }}
+              to="/articles"
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </motion.div>
   );
 }

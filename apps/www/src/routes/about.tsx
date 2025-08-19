@@ -1,12 +1,28 @@
+import { MDXContent } from "@content-collections/mdx/react";
+import { sexyEaseCurve } from "@rectangular-labs/ui/animation/constants";
 import { useTheme } from "@rectangular-labs/ui/components/theme-provider";
-import { createFileRoute } from "@tanstack/react-router";
-import { motion, type Variants } from "motion/react";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { motion, stagger, type Variants } from "motion/react";
+import { getArticleBySlug } from "~/lib/article";
+
+const aboutDetails = createServerFn().handler(() => {
+  return getArticleBySlug("about");
+});
 
 export const Route = createFileRoute("/about")({
   component: About,
+  loader: async () => {
+    const aboutArticle = await aboutDetails();
+    if (!aboutArticle) {
+      throw notFound();
+    }
+    return { article: aboutArticle };
+  },
 });
 
 function About() {
+  const { article } = Route.useLoaderData();
   const { theme } = useTheme();
 
   const containerVariants: Variants = {
@@ -14,9 +30,8 @@ function About() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.22,
-        delayChildren: 0.2,
-        ease: [0.22, 1, 0.36, 1],
+        delayChildren: stagger(0.2),
+        ease: sexyEaseCurve,
       },
     },
   };
@@ -29,8 +44,8 @@ function About() {
       scale: 1,
       filter: "blur(0px)",
       transition: {
-        duration: 0.9,
-        ease: [0.22, 1, 0.36, 1],
+        duration: 0.4,
+        ease: sexyEaseCurve,
       },
     },
   };
@@ -42,8 +57,8 @@ function About() {
       y: 0,
       x: 0,
       transition: {
-        duration: 0.75,
-        ease: [0.22, 1, 0.36, 1],
+        duration: 0.5,
+        ease: sexyEaseCurve,
       },
     },
   };
@@ -59,22 +74,7 @@ function About() {
       <motion.h1 variants={headingVariants}>About</motion.h1>
 
       <motion.p variants={paragraphVariants}>
-        In this section, I explain why I am indeed perhaps one of the best if
-        not the best creator on the planet. For starters, this text that you are
-        reading right now is in fact not written by a human, it is generated
-        using an advanced AI known as GPT-3. Are you shocked? Don't be, because
-        I was simply lying to you. The true purpose of the text is to fill up
-        the page to look as if there is something worth saying here, when in
-        reality, the is not.
-      </motion.p>
-
-      <motion.p variants={paragraphVariants}>
-        Around the age of 0 years old, I was born onto this planet. For many
-        people around me, this seems to be a fairly common occurrence. However,
-        what was not common was what followed this. There is no doubt in my mind
-        that when you read what I am about to say, you will question your own
-        greatness. Are you ready? I invested my life savings into Terra. Fear,
-        my existence.
+        <MDXContent code={article.mdx} />
       </motion.p>
     </motion.div>
   );

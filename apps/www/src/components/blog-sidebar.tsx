@@ -1,3 +1,4 @@
+import { sexyEaseCurve } from "@rectangular-labs/ui/animation/constants";
 import {
   Sidebar,
   SidebarContent,
@@ -11,8 +12,9 @@ import {
 } from "@rectangular-labs/ui/components/ui/sidebar";
 import { Link, useLocation } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
+import { FancyLinkVariant } from "./fancy-link";
 
-const menuItems = [
+export const MENU_ITEMS = [
   {
     label: "Home",
     pathname: "/" as const,
@@ -45,7 +47,7 @@ export function BlogSidebar() {
             className="-rotate-90 -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 hidden transform-gpu text-xl will-change-transform group-data-[collapsible=icon]:block"
             exit={{ opacity: 0, scale: 0.96 }}
             initial={{ opacity: 0, scale: 0.96 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.45, ease: sexyEaseCurve }}
           >
             Menu
           </motion.p>
@@ -60,7 +62,7 @@ export function BlogSidebar() {
               className="w-full border-sidebar-border border-b py-8 text-center text-xl group-data-[collapsible=icon]:hidden"
               exit={{ opacity: 0, y: -10 }}
               initial={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.5, ease: sexyEaseCurve }}
             >
               Menu
             </motion.p>
@@ -74,7 +76,7 @@ export function BlogSidebar() {
             <SidebarMenu>
               <AnimatePresence initial={false}>
                 {open &&
-                  menuItems.map((item, index) => (
+                  MENU_ITEMS.map((item, index) => (
                     <motion.div
                       animate={{ opacity: 1, x: 0, y: 0 }}
                       exit={{ opacity: 0, x: -22, y: 14 }}
@@ -82,21 +84,26 @@ export function BlogSidebar() {
                       key={item.pathname}
                       transition={{
                         duration: 0.45,
-                        ease: [0.22, 1, 0.36, 1],
+                        ease: sexyEaseCurve,
                         delay: 0.12 + index * 0.06,
                       }}
                     >
                       <SidebarMenuItem>
                         <SidebarMenuButton
                           asChild
-                          className="relative h-full transform-gpu justify-center py-5 text-xl transition-colors will-change-transform before:absolute before:bottom-0 before:left-0 before:h-0.5 before:w-full before:origin-left before:scale-x-0 before:transform before:bg-current before:transition-transform before:duration-300 before:will-change-transform hover:bg-sidebar hover:before:scale-x-100 data-[active=true]:bg-sidebar data-[active=true]:font-bold"
+                          className={FancyLinkVariant()}
                           isActive={
                             location.pathname === item.pathname ||
                             (item.pathname.length > 1 &&
                               location.pathname.includes(item.pathname))
                           }
                         >
-                          <Link to={item.pathname}>{item.label}</Link>
+                          <Link
+                            className="flex justify-center hover:bg-transparent"
+                            to={item.pathname}
+                          >
+                            {item.label}
+                          </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     </motion.div>
