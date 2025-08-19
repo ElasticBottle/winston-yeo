@@ -1,6 +1,7 @@
 import {
   ArrowDownIcon,
   ArrowUpIcon,
+  DotIcon,
   EyeIcon,
   EyeOffIcon,
   FileIcon,
@@ -91,6 +92,7 @@ export const ArrowUp = ArrowUpIcon;
 export const ArrowDown = ArrowDownIcon;
 export const File = FileIcon;
 export const Menu = MenuIcon;
+export const Dot = DotIcon;
 
 export const TanStack = (props: SVGProps<SVGSVGElement>) => (
   <svg
