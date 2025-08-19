@@ -111,7 +111,7 @@ function ArticlesLayout() {
   };
 
   return (
-    <div className="h-screen">
+    <div>
       <div className="mx-auto flex h-full max-w-6xl">
         <motion.div
           className="flex h-full w-full flex-col lg:flex-row lg:gap-16"
@@ -188,14 +188,8 @@ function ArticlesLayout() {
 
           {/* Right side - Articles Content */}
           <LayoutGroup id="articles">
-            <div
-              className="flex h-full w-full"
-              // style={{ flexBasis: isDetailRoute ? "100%" : "66.6667%" }}
-              // transition={{ duration: 0.6, ease: sexyEaseCurve }}
-            >
-              <div className="h-full w-full px-8 py-16">
-                <Outlet />
-              </div>
+            <div className="flex h-full w-full px-8 py-16">
+              <Outlet />
             </div>
           </LayoutGroup>
         </motion.div>

@@ -1,6 +1,17 @@
 import { sexyEaseCurve } from "@rectangular-labs/ui/animation/constants";
 import { Badge } from "@rectangular-labs/ui/components/ui/badge";
-import { createFileRoute } from "@tanstack/react-router";
+import {
+  getPages,
+  getPaginationItems,
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@rectangular-labs/ui/components/ui/pagination";
+import { createFileRoute, createLink } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { motion, stagger, type Variants } from "motion/react";
 import { useMemo } from "react";
@@ -15,14 +26,18 @@ const listItemVariants: Variants = {
     transition: { duration: 0.55, ease: sexyEaseCurve },
   },
 };
-const articleServerFn = createServerFn().handler(() => {
+const getArticles = createServerFn().handler(() => {
   return getArticlesSummary();
 });
+
+const TanstackPaginationLink = createLink(PaginationLink);
+const TanstackPaginationNext = createLink(PaginationNext);
+const TanstackPaginationPrevious = createLink(PaginationPrevious);
 
 export const Route = createFileRoute("/articles/")({
   component: ArticlesList,
   loader: async () => {
-    return await articleServerFn();
+    return await getArticles();
   },
 });
 
@@ -58,7 +73,13 @@ function ArticlesList() {
     return filtered;
   }, [search.search, search.tag, articles]);
 
-  if (filteredArticles.length === 0) {
+  const { currentPage, totalPages, pagedItems } = getPages({
+    items: filteredArticles,
+    currentPage: Number(search.page ?? 1),
+    itemsPerPage: 10,
+  });
+
+  if (pagedItems.length === 0) {
     return (
       <div className="flex h-64 items-center justify-center">
         <p className="text-muted-foreground text-xl">No articles found.</p>
@@ -73,7 +94,7 @@ function ArticlesList() {
       initial="hidden"
       transition={{ delayChildren: stagger(0.06) }}
     >
-      {filteredArticles.map((article) => (
+      {pagedItems.map((article) => (
         <motion.article
           className="group"
           key={article.slug}
@@ -108,6 +129,48 @@ function ArticlesList() {
           </FancyLink>
         </motion.article>
       ))}
+
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <TanstackPaginationPrevious
+              disabled={currentPage === 1}
+              search={{
+                page: currentPage - 1,
+              }}
+              to="/articles"
+            />
+          </PaginationItem>
+
+          {getPaginationItems({ currentPage, totalPages }).map((item) => (
+            <PaginationItem key={item.key}>
+              {item.kind === "ellipsis" ? (
+                <PaginationEllipsis />
+              ) : (
+                <TanstackPaginationLink
+                  isActive={item.value === currentPage}
+                  search={{
+                    page: item.value,
+                  }}
+                  to="/articles"
+                >
+                  {item.value}
+                </TanstackPaginationLink>
+              )}
+            </PaginationItem>
+          ))}
+
+          <PaginationItem>
+            <TanstackPaginationNext
+              disabled={currentPage === totalPages}
+              search={{
+                page: currentPage + 1,
+              }}
+              to="/articles"
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </motion.div>
   );
 }
