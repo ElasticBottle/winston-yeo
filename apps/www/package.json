@@ -41,7 +41,7 @@
     "@content-collections/cli": "^0.1.7",
     "@content-collections/core": "^0.10.0",
     "@content-collections/mdx": "^0.2.2",
-    "@content-collections/vite": "^0.2.6",
+    "@content-collections/vite": "^0.2.7",
     "@rectangular-labs/typescript": "workspace:*",
     "@tailwindcss/vite": "^4.1.11",
     "@testing-library/dom": "^10.4.1",
