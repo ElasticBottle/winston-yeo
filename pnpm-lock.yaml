@@ -80,16 +80,16 @@ importers:
     devDependencies:
       '@content-collections/cli':
         specifier: ^0.1.7
-        version: 0.1.7(@content-collections/core@0.10.0(typescript@5.8.3))
+        version: 0.1.7(@content-collections/core@0.11.0(typescript@5.8.3))
       '@content-collections/core':
-        specifier: ^0.10.0
-        version: 0.10.0(typescript@5.8.3)
+        specifier: ^0.11.0
+        version: 0.11.0(typescript@5.8.3)
       '@content-collections/mdx':
         specifier: ^0.2.2
-        version: 0.2.2(@content-collections/core@0.10.0(typescript@5.8.3))(acorn@8.15.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        version: 0.2.2(@content-collections/core@0.11.0(typescript@5.8.3))(acorn@8.15.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@content-collections/vite':
         specifier: ^0.2.7
-        version: 0.2.7(@content-collections/core@0.10.0(typescript@5.8.3))(vite@7.0.6(@types/node@22.17.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.39.0)(tsx@4.20.3)(yaml@2.8.0))
+        version: 0.2.7(@content-collections/core@0.11.0(typescript@5.8.3))(vite@7.0.6(@types/node@22.17.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.39.0)(tsx@4.20.3)(yaml@2.8.0))
       '@rectangular-labs/typescript':
         specifier: workspace:*
         version: link:../../tooling/typescript
@@ -769,8 +769,8 @@ packages:
     peerDependencies:
       '@content-collections/core': 0.x
 
-  '@content-collections/core@0.10.0':
-    resolution: {integrity: sha512-GDBYbvhoj9lHNlarY5wr+3PoO3m9GBMjftio9NXatLuZaenY+EHHNCcbbA3J+c06Q7WBYwNoLAaMX2I5N0duAg==}
+  '@content-collections/core@0.11.0':
+    resolution: {integrity: sha512-k6g6AESyLLIYNu4KiBUFAPAq01mqeAZ/2QLmp97iBZLOURWfFrvo3zDGBPtCrXtKYgkRlWxOyLRpIjKqD6aNjw==}
     peerDependencies:
       typescript: ^5.0.2
 
@@ -8297,16 +8297,16 @@ snapshots:
 
   '@colors/colors@1.6.0': {}
 
-  '@content-collections/cli@0.1.7(@content-collections/core@0.10.0(typescript@5.8.3))':
+  '@content-collections/cli@0.1.7(@content-collections/core@0.11.0(typescript@5.8.3))':
     dependencies:
       '@clerc/core': 0.44.0
       '@clerc/plugin-completions': 0.44.0(@clerc/core@0.44.0)
       '@clerc/plugin-help': 0.44.0(@clerc/core@0.44.0)
       '@clerc/plugin-version': 0.44.0(@clerc/core@0.44.0)
-      '@content-collections/core': 0.10.0(typescript@5.8.3)
-      '@content-collections/integrations': 0.3.0(@content-collections/core@0.10.0(typescript@5.8.3))
+      '@content-collections/core': 0.11.0(typescript@5.8.3)
+      '@content-collections/integrations': 0.3.0(@content-collections/core@0.11.0(typescript@5.8.3))
 
-  '@content-collections/core@0.10.0(typescript@5.8.3)':
+  '@content-collections/core@0.11.0(typescript@5.8.3)':
     dependencies:
       '@standard-schema/spec': 1.0.0
       camelcase: 8.0.0
@@ -8322,13 +8322,13 @@ snapshots:
       yaml: 2.8.0
       zod: 3.25.76
 
-  '@content-collections/integrations@0.3.0(@content-collections/core@0.10.0(typescript@5.8.3))':
+  '@content-collections/integrations@0.3.0(@content-collections/core@0.11.0(typescript@5.8.3))':
     dependencies:
-      '@content-collections/core': 0.10.0(typescript@5.8.3)
+      '@content-collections/core': 0.11.0(typescript@5.8.3)
 
-  '@content-collections/mdx@0.2.2(@content-collections/core@0.10.0(typescript@5.8.3))(acorn@8.15.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+  '@content-collections/mdx@0.2.2(@content-collections/core@0.11.0(typescript@5.8.3))(acorn@8.15.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
-      '@content-collections/core': 0.10.0(typescript@5.8.3)
+      '@content-collections/core': 0.11.0(typescript@5.8.3)
       esbuild: 0.25.7
       mdx-bundler: 10.1.1(acorn@8.15.0)(esbuild@0.25.7)
       react: 19.1.1
@@ -8338,10 +8338,10 @@ snapshots:
       - acorn
       - supports-color
 
-  '@content-collections/vite@0.2.7(@content-collections/core@0.10.0(typescript@5.8.3))(vite@7.0.6(@types/node@22.17.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.39.0)(tsx@4.20.3)(yaml@2.8.0))':
+  '@content-collections/vite@0.2.7(@content-collections/core@0.11.0(typescript@5.8.3))(vite@7.0.6(@types/node@22.17.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.39.0)(tsx@4.20.3)(yaml@2.8.0))':
     dependencies:
-      '@content-collections/core': 0.10.0(typescript@5.8.3)
-      '@content-collections/integrations': 0.3.0(@content-collections/core@0.10.0(typescript@5.8.3))
+      '@content-collections/core': 0.11.0(typescript@5.8.3)
+      '@content-collections/integrations': 0.3.0(@content-collections/core@0.11.0(typescript@5.8.3))
       vite: 7.0.6(@types/node@22.17.2)(jiti@2.5.1)(lightningcss@1.30.1)(terser@5.39.0)(tsx@4.20.3)(yaml@2.8.0)
 
   '@cspotcode/source-map-support@0.8.1':
