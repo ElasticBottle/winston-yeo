@@ -160,8 +160,8 @@ importers:
         specifier: ^1.7.9
         version: 1.7.9
       '@orpc/json-schema':
-        specifier: ^1.7.9
-        version: 1.7.9(crossws@0.3.5)(ws@8.18.1)
+        specifier: ^1.8.5
+        version: 1.8.5(@opentelemetry/api@1.9.0)(crossws@0.3.5)(ws@8.18.1)
       '@orpc/openapi':
         specifier: ^1.7.9
         version: 1.7.9(crossws@0.3.5)(ws@8.18.1)
@@ -1748,8 +1748,8 @@ packages:
   '@orpc/interop@1.8.5':
     resolution: {integrity: sha512-gYFfJF2ZDEHwufczofrMLjYfJAAl6jKZswsavNVzRNaBmI2ZmIi3HNfHpE80HWdrraV5Dx+8z//dPiYAorilSw==}
 
-  '@orpc/json-schema@1.7.9':
-    resolution: {integrity: sha512-ZiuJP/589+SaosLbAlA2kZZ1xzYYjSHNGdcEFyA+p3hx1jXj5neLks90rBdivRxRoMSFQoiK91CsQIJH5Kmuzw==}
+  '@orpc/json-schema@1.8.5':
+    resolution: {integrity: sha512-bYtoHd4+1hOC8RN5K9ZOwjvzgbkbdeLrhlFrVT+eycP4lCNzXd8UUJqKaABo4W4dFEzou2NjnMrKwu2DZ3uxWw==}
 
   '@orpc/openapi-client@1.7.9':
     resolution: {integrity: sha512-33nRGlPnilvMFcXy7a9O9B8NtQXwwviX48Hlli7LGaQsu+uILrxsg+Tuxjm6tUENuqqtF1eRHZClCrd2u2e2yA==}
@@ -9170,14 +9170,15 @@ snapshots:
 
   '@orpc/interop@1.8.5': {}
 
-  '@orpc/json-schema@1.7.9(crossws@0.3.5)(ws@8.18.1)':
+  '@orpc/json-schema@1.8.5(@opentelemetry/api@1.9.0)(crossws@0.3.5)(ws@8.18.1)':
     dependencies:
-      '@orpc/contract': 1.7.9
-      '@orpc/openapi': 1.7.9(crossws@0.3.5)(ws@8.18.1)
-      '@orpc/server': 1.7.9(crossws@0.3.5)(ws@8.18.1)
-      '@orpc/shared': 1.7.9
-      json-schema-typed: 8.0.1
+      '@orpc/contract': 1.8.5(@opentelemetry/api@1.9.0)
+      '@orpc/interop': 1.8.5
+      '@orpc/openapi': 1.8.5(@opentelemetry/api@1.9.0)(crossws@0.3.5)(ws@8.18.1)
+      '@orpc/server': 1.8.5(@opentelemetry/api@1.9.0)(crossws@0.3.5)(ws@8.18.1)
+      '@orpc/shared': 1.8.5(@opentelemetry/api@1.9.0)
     transitivePeerDependencies:
+      - '@opentelemetry/api'
       - crossws
       - ws
 
