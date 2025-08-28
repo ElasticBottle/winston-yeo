@@ -154,8 +154,8 @@ importers:
         specifier: ^1.8.5
         version: 1.8.5(@ark/schema@0.46.0)(@opentelemetry/api@1.9.0)(@orpc/contract@1.7.9)(arktype@2.1.20)(crossws@0.3.5)(ws@8.18.1)
       '@orpc/client':
-        specifier: ^1.7.9
-        version: 1.7.9
+        specifier: ^1.8.5
+        version: 1.8.5(@opentelemetry/api@1.9.0)
       '@orpc/contract':
         specifier: ^1.7.9
         version: 1.7.9
@@ -173,7 +173,7 @@ importers:
         version: 1.7.9(crossws@0.3.5)(ws@8.18.1)
       '@orpc/tanstack-query':
         specifier: ^1.7.9
-        version: 1.7.9(@orpc/client@1.7.9)(@tanstack/query-core@5.83.1)
+        version: 1.7.9(@orpc/client@1.8.5(@opentelemetry/api@1.9.0))(@tanstack/query-core@5.83.1)
       '@rectangular-labs/db':
         specifier: workspace:*
         version: link:../db
@@ -9335,9 +9335,9 @@ snapshots:
     transitivePeerDependencies:
       - '@opentelemetry/api'
 
-  '@orpc/tanstack-query@1.7.9(@orpc/client@1.7.9)(@tanstack/query-core@5.83.1)':
+  '@orpc/tanstack-query@1.7.9(@orpc/client@1.8.5(@opentelemetry/api@1.9.0))(@tanstack/query-core@5.83.1)':
     dependencies:
-      '@orpc/client': 1.7.9
+      '@orpc/client': 1.8.5(@opentelemetry/api@1.9.0)
       '@orpc/shared': 1.7.9
       '@tanstack/query-core': 5.83.1
 
