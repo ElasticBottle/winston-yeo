@@ -40,7 +40,7 @@
     "@orpc/arktype": "^1.8.5",
     "@orpc/client": "^1.8.5",
     "@orpc/contract": "^1.8.5",
-    "@orpc/json-schema": "^1.7.9",
+    "@orpc/json-schema": "^1.8.6",
     "@orpc/openapi": "^1.7.9",
     "@orpc/openapi-client": "^1.8.5",
     "@orpc/server": "^1.7.9",
