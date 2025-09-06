@@ -172,8 +172,8 @@ importers:
         specifier: ^1.7.9
         version: 1.7.9(crossws@0.3.5)(ws@8.18.1)
       '@orpc/tanstack-query':
-        specifier: ^1.7.9
-        version: 1.7.9(@orpc/client@1.8.5(@opentelemetry/api@1.9.0))(@tanstack/query-core@5.83.1)
+        specifier: ^1.8.6
+        version: 1.8.6(@opentelemetry/api@1.9.0)(@orpc/client@1.8.5(@opentelemetry/api@1.9.0))(@tanstack/query-core@5.83.1)
       '@rectangular-labs/db':
         specifier: workspace:*
         version: link:../db
@@ -1796,6 +1796,14 @@ packages:
       '@opentelemetry/api':
         optional: true
 
+  '@orpc/shared@1.8.6':
+    resolution: {integrity: sha512-laRl5tvBZTFQVvdS7tWN83xlY7w7xVcn/U7GFVsy2a/lTBg4o0sK+bdN8EUGm0ijwxH1gOhUvbwinnSuXVRL8A==}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.9.0'
+    peerDependenciesMeta:
+      '@opentelemetry/api':
+        optional: true
+
   '@orpc/standard-server-aws-lambda@1.7.9':
     resolution: {integrity: sha512-Vebxh0t1mm0Fckx0coGVpYXoOMCSoFxFJrvqkVH2GJgmuILokbTE9gfrbImj1dx9pizBR1m+qic8xTHomfuTog==}
 
@@ -1826,10 +1834,10 @@ packages:
   '@orpc/standard-server@1.8.5':
     resolution: {integrity: sha512-pdqSJW+vzEQYu/rSdW/7BZhPtK/5cdr/8E/7KkM36GXpRUQypaPa3qd90SUk9dl92XkidAvpg0xPt2WieI9zSA==}
 
-  '@orpc/tanstack-query@1.7.9':
-    resolution: {integrity: sha512-T8JMr7+Zwj6VFJ3pPwuoYXIfofFn32bYai8OfET52L8dl5lIDgkifQArYPPUw7T4upMR6k2SXyVKukTYYQq+9A==}
+  '@orpc/tanstack-query@1.8.6':
+    resolution: {integrity: sha512-+koozDrqYeesCk5R60KE1HUZsz+drkue+V6oDwJa+VfDtWZnrXiIjxV90akptDPiQm/xm+Xr+gedblx42nn/xA==}
     peerDependencies:
-      '@orpc/client': 1.7.9
+      '@orpc/client': 1.8.6
       '@tanstack/query-core': '>=5.80.2'
 
   '@parcel/watcher-android-arm64@2.5.1':
@@ -9271,6 +9279,13 @@ snapshots:
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
 
+  '@orpc/shared@1.8.6(@opentelemetry/api@1.9.0)':
+    dependencies:
+      radash: 12.1.1
+      type-fest: 4.41.0
+    optionalDependencies:
+      '@opentelemetry/api': 1.9.0
+
   '@orpc/standard-server-aws-lambda@1.7.9':
     dependencies:
       '@orpc/shared': 1.7.9
@@ -9335,11 +9350,13 @@ snapshots:
     transitivePeerDependencies:
       - '@opentelemetry/api'
 
-  '@orpc/tanstack-query@1.7.9(@orpc/client@1.8.5(@opentelemetry/api@1.9.0))(@tanstack/query-core@5.83.1)':
+  '@orpc/tanstack-query@1.8.6(@opentelemetry/api@1.9.0)(@orpc/client@1.8.5(@opentelemetry/api@1.9.0))(@tanstack/query-core@5.83.1)':
     dependencies:
       '@orpc/client': 1.8.5(@opentelemetry/api@1.9.0)
-      '@orpc/shared': 1.7.9
+      '@orpc/shared': 1.8.6(@opentelemetry/api@1.9.0)
       '@tanstack/query-core': 5.83.1
+    transitivePeerDependencies:
+      - '@opentelemetry/api'
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
